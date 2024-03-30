@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.padding-root {
+    @apply px-5;
+}
+
+.margin-component {
+    @apply mx-20;
+}
