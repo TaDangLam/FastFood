@@ -56,6 +56,10 @@ const CheckoutPage = () => {
         setSelectedAddress(selectedAddr);
     };
 
+    const handleToNewAddress = () => {
+        router.push('/information/address/newAddress');
+    }
+
     const handleDirectPayment = async() => {
         try {
             const payload = {
@@ -169,21 +173,29 @@ const CheckoutPage = () => {
                             />
                         </div>
 
-                        <div className="w-full ">
-                            <label className="flex items-center uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                                (<span className="text-red-500 font-semibold">*</span>) Address 
-                            </label>
-                            <select 
-                                name="" 
-                                id=""
-                                className="appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                onChange={handleAddressChange}
-                                >
-                                    {user?.address.map(addr => (
-                                        <option key={addr._id} value={addr._id}>{`${addr.street}, ${addr.city}, ${addr.province}`}</option>
-                                    ))}
-                            </select>
-                        </div>
+                        {(user && user.address && user.address.length > 0) ? (
+                            <div className="w-full ">
+                                <label className="flex items-center uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                                    (<span className="text-red-500 font-semibold">*</span>) Address 
+                                </label>
+                                <select 
+                                    name="" 
+                                    id=""
+                                    className="appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                    onChange={handleAddressChange}
+                                    >
+                                        {user?.address.map(addr => (
+                                            <option key={addr._id} value={addr._id}>{`${addr.street}, ${addr.city}, ${addr.province}`}</option>
+                                        ))}
+                                </select>
+                                <div className="flex justify-center text-sm text-[#ff834a]  cursor-pointer font-light w-3/12" onClick={handleToNewAddress}>More New Address</div>
+                            </div>
+                        ) : (
+                            <div className="flex gap-5 w-full items-center">
+                                <div className="text-lg font-semibold">Please Add New Address:</div>
+                                <div className="bg-[#ff834a] px-8 py-1 cursor-pointer rounded-xl text-white duration-500 hover:opacity-80" onClick={handleToNewAddress}>New</div>
+                            </div>
+                        )}
                     </div>
                 </div>
                 <div className="flex flex-col gap-3 bg-white w-3/6 rounded-xl px-4 py-6 h-full border-2 border-[#ff8349]">

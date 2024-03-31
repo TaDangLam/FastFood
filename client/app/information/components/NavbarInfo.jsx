@@ -20,7 +20,7 @@ const NavbarInfo = () => {
 
     return ( 
         <div>
-            <div className="border-2 rounded-xl">
+            <div className="border-2 ">
                 <div className="w-full text-sm font-medium text-gray-900 bg-white  rounded-xl">
                     <Link
                         href={"/information"}

@@ -145,6 +145,63 @@ const userService = {
             throw new Error(error.message);
         }
     },
+    updateRoleUser: async (userId) => {
+        try {
+            const checkUser = await User.findById(userId);
+            if (!checkUser) {
+                throw new Error('User is not exist');
+            }
+            
+            
+            if (checkUser.role === 'customer') {
+                const updatedUser = await User.findByIdAndUpdate(userId, { role: 'staff' }, { new: true });
+                return {
+                    status: 'OK',
+                    message: 'SUCCESS',
+                    data: updatedUser
+                };
+            } else if(checkUser.role === 'staff'){
+                const updatedUserStaff = await User.findByIdAndUpdate(userId, { role: 'customer' }, { new: true });
+                return {
+                    status: 'OK',
+                    message: 'SUCCESS',
+                    data: updatedUserStaff
+                };
+            } else {
+                return {
+                    status: 'Failed',
+                    message: 'User role is not updated because the current role is not customer'
+                };
+            }
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    },
+    // updateDownRoleUser: async (userId) => {
+    //     try {
+    //         const checkUser = await User.findById(userId);
+    //         if (!checkUser) {
+    //             throw new Error('User is not exist');
+    //         }
+            
+            
+    //         if (checkUser.role === 'staff') {
+    //             const updatedUser = await User.findByIdAndUpdate(userId, { role: 'staff' }, { new: true });
+    //             return {
+    //                 status: 'OK',
+    //                 message: 'SUCCESS',
+    //                 data: updatedUser
+    //             };
+    //         } else {
+    //             return {
+    //                 status: 'Failed',
+    //                 message: 'User role is not updated because the current role is not customer'
+    //             };
+    //         }
+    //     } catch (error) {
+    //         throw new Error(error.message);
+    //     }
+    // },
     deleteUser: (userId) => {
         return new Promise(async(resolve, reject) => {
             try {

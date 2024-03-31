@@ -11,7 +11,7 @@ const NavbarAddress = () => {
     const active = inactiveLink + ' bg-gradient-to-r from-signup-left to-signup-right text-white';
     
     const hanleBack = async() => {
-        router.push('/information/address');
+        router.back();
     }
 
     return ( 

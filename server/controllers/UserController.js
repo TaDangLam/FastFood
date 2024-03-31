@@ -72,6 +72,24 @@ const userController = {
             res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: error.message });
         }
     },
+    updateRoleUser: async (req, res) => {
+        try {
+            const userId = req.params.id;
+            const response = await userService.updateRoleUser(userId);
+            return res.status(StatusCodes.OK).json(response);
+        } catch (error) {
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: error.message });
+        }
+    },
+    // updateDownRoleUser: async (req, res) => {
+    //     try {
+    //         const userId = req.params.id;
+    //         const response = await userService.updateDownRoleUser(userId);
+    //         return res.status(StatusCodes.OK).json(response);
+    //     } catch (error) {
+    //         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: error.message });
+    //     }
+    // },
     deleteUser: async(req, res) => {
         try {
             const userId = req.params.id;

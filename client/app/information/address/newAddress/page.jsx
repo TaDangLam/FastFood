@@ -27,12 +27,13 @@ const newAddress = () => {
             //     address: [...user.address, response.data._id] // Thêm địa chỉ mới vào mảng address của user
             // };
             // sessionStorage.setItem('user', JSON.stringify(updatedUser));
-            router.push('/information/address');
+            // router.push('/information/address');
+            router.back();
         } catch (error) {
             console.log(error)
         }
     }
-    console.log(user)
+    // console.log(user)
     return ( 
         <div className="flex flex-col gap-5 px-2 w-full h-full">
             <div className=" w-full h-1/6 px-3 text-xl font-semibold">New Address</div>

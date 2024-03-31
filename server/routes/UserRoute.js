@@ -11,6 +11,8 @@ Router.post('/login', userController.loginUser);
 Router.post('/refresh-token', authMiddleWare.verifyCustomer, userController.refreshToken);
 Router.get('/get-detail-user/:id', authMiddleWare.verifyCustomer, userController.getDetailUser);
 Router.patch('/update-user/:id', authMiddleWare.verifyCustomer, userController.updateUser);
+Router.patch('/update-role-user/:id', authMiddleWare.verifyTokenAdmin, userController.updateRoleUser);
+// Router.patch('/update-down-role-user/:id', authMiddleWare.verifyTokenAdmin, userController.updateDownRoleUser);
 Router.delete('/delete-user/:id', authMiddleWare.verifyTokenAdmin, userController.deleteUser);
 
 export const UserRoute = Router;

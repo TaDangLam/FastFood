@@ -24,10 +24,10 @@ const InformationLayout = ({ children }) => {
                             <NavbarInfo />
                         ) : isAuthOrDashboardPage ? (
                             <NavbarOrderDetail />
-                        ) : isEditAddressPage ? (
-                            <NavbarAddress />
-                        ) : (
+                        ) : isOrderStatus  ? (
                             <NavbarOrder />
+                        ) : (
+                            <NavbarAddress />
                         )}
                 </div>
                 <div className='w-9/12 rounded-xl border-2 px-2 py-5'>{children}</div>

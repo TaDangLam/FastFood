@@ -157,9 +157,8 @@ export const getReviewById = async(id) => {
 }
 
 
-
 // ---------------------------- User (Be careful response.data.data) -----------------------------
-export const getAllUser = async(accessToken) => {
+export const getAllCustomer = async(accessToken) => {
     try {
         const response = await axios.get(`${baseUrl}/user/getAll`, {
             headers: {
@@ -251,6 +250,20 @@ export const updateUser = async(updateUser, dispatch) => {
         dispatch(UpdateUser(response.data.data));
     } catch (error) {
         console.log('Update User error: ', error);
+        throw error;
+    }
+}
+
+export const updateRoleUser = async(userId, accessToken) => {
+    try {
+        const response = await axios.patch(`${baseUrl}/user/update-role-user/${userId}`,null, {
+            headers: {
+                'token': `Bearer ${accessToken}`
+            }
+        });
+        return response.data.data;
+    } catch (error) {
+        console.log('Update Role User error: ', error);
         throw error;
     }
 }

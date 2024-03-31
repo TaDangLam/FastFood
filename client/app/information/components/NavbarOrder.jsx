@@ -2,56 +2,59 @@
 import { usePathname, useRouter } from 'next/navigation';
 import { useDispatch } from "react-redux";
 import Link from "next/link";
+import { useState } from 'react';
 
-const NavbarAddress = () => {
+const NavbarOrder = () => {
     const router = useRouter();
     const pathname = usePathname();
     const dispatch = useDispatch();
-    const inactiveLink = 'flex items-center justify-center w-full px-4  cursor-pointer h-12 text-center text-lg font-bold hover:bg-slate-100'
+    const [activeTab, setActiveTab] = useState('All');
+    const inactiveLink = 'flex items-center  w-full px-4  cursor-pointer h-12 text-center text-lg font-bold hover:bg-slate-100'
     const active = inactiveLink + ' bg-gradient-to-r from-signup-left to-signup-right text-white';
     
     const hanleBack = async() => {
         router.push('/information');
     }
-    const a = 5;
-    const test = () => {
-        router.push(`/information/order/orderPending?a=${a}`);
+
+    const handlePath = (path) => {
+        setActiveTab(path)
+        router.push(`/information/order?path=${path}`);
     }
 
     return ( 
         <div>
             <div className="border-2">
                 <div className="w-full text-sm font-medium text-gray-900 bg-white  rounded-xl">
-                    <Link
+                    <div onClick={() => handlePath('All')}
                         href={"/information/order"}
-                        className={pathname === '/information/order' ? active : inactiveLink}
+                        className={activeTab === 'All' ? active : inactiveLink}
                     >
-                       All Order
-                    </Link>
-                    <div onClick={test}
-                        href={"/information/order/orderPending"}
-                        className={pathname.includes('/information/order/orderPending') ? active : inactiveLink}
-                    >
-                       Order Pending
+                       All
                     </div>
-                    <Link
-                        href={"/information/order/orderProcessing"}
-                        className={pathname.includes('/information/order/orderProcessing') ? active : inactiveLink}
+                    <div onClick={() => handlePath('Pending')}
+                        href={"/information/order"}
+                        className={activeTab === 'Pending' ? active : inactiveLink}
                     >
-                        Order Processing
-                    </Link>
-                    <Link
-                        href={"/information/order/orderDelivered"}
-                        className={pathname.includes('/information/order/orderDelivered') ? active : inactiveLink}
+                       Pending
+                    </div>
+                    <div onClick={() => handlePath('Processing')}
+                        href={"/information/order"}
+                        className={activeTab === 'Processing' ? active : inactiveLink}
                     >
-                        Order Delivered
-                    </Link>
-                    <Link
-                        href={"/information/order/orderCancel"}
-                        className={pathname.includes('/information/order/orderCancel') ? active : inactiveLink}
+                        Processing
+                    </div>
+                    <div onClick={() => handlePath('Delivered')}
+                        href={"/information/order"}
+                        className={activeTab === 'Delivered' ? active : inactiveLink}
                     >
-                        Order Cancel
-                    </Link>
+                        Delivered
+                    </div>
+                    <div onClick={() => handlePath('Cancel')}
+                        href={"/information/order"}
+                        className={activeTab === 'Cancel' ? active : inactiveLink}
+                    >
+                        Cancel
+                    </div>
                     <button onClick={hanleBack} className={inactiveLink}>
                         Back
                     </button>
@@ -61,4 +64,4 @@ const NavbarAddress = () => {
      );
 }
  
-export default NavbarAddress;
+export default NavbarOrder;

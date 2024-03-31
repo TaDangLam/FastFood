@@ -29,7 +29,7 @@ const Address = () => {
         fetchAllAddressForUser();
     }, []);
 
-    console.log(user);
+    // console.log(user);
     const handleRemoveAddress = (id) => {
         Swal.fire({
             title: "Are you sure?",
