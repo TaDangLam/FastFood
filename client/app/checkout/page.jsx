@@ -8,7 +8,7 @@ import Swal from "sweetalert2";
 
 import { createOrder, getDetailUser } from "../api/route";
 import Paypal from "@/components/Paypal";
-
+// sb-47xx4930095432@personal.example.com
 const CheckoutPage = () => {
     const router = useRouter();
     // const user = useSelector(state => state.auth.user);

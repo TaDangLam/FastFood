@@ -72,6 +72,16 @@ export const getAllProduct = async(accessToken) => {
     }
 }
 
+export const searchProduct = async(keyword) => {
+    try {
+        const response = await axios.get(`${baseUrl}/product/search?keyword=${keyword}`);
+        return response.data.data;
+    } catch (error) {
+        console.log('Search Product Error: ', error);
+        throw error;
+    }
+}
+
 export const getProductCategory = async(cid, dispatch) => {
     try {
         const response = await axios.get(`${baseUrl}/product/getFew-product-cate/${cid}`);

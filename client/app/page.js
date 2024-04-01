@@ -136,7 +136,7 @@ export default function Home() {
             SEASON <span className="text-[#ffc139]">SOUP</span> 
           </div>
           <div className="w-full">
-            We offer you a special dish – our season soup containing season vegetables
+            We offer you a special dish - our season soup containing season vegetables
           </div>
           <div className="w-full">
             <Link href={'/category/65f04ded81da17e4da645815'} className="flex bg-[#ffc139] p-5 w-1/6 text-white rounded-full hover:text-[#ffc139] hover:bg-white  hover:outline hover:outline-[#ffc139] duration-500"><FaPlus className="text-xl"/></Link>
@@ -158,7 +158,7 @@ export default function Home() {
           {selectedCategoryId && products?.map(product => (
             <div 
               key={product._id} 
-              className="flex flex-col gap-5 w-1/4 p-6 border border-[#d4d4d4] hover:shadow-xl"
+              className="flex flex-col gap-5 w-1/4 p-6 border border-[#d4d4d4] hover:shadow-xl duration-500"
             >
               <Link className="w-full h-4/6 transition-opacity duration-300 hover:opacity-75" href={`/productdetail/${product._id}`}>
                 <img src={`${process.env.NEXT_PUBLIC_API_UPLOAD}/${product.name}/${product.images[0]}`} 

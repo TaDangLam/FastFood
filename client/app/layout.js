@@ -23,9 +23,9 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className}>
         <StoreProvider>
-            <header className="padding-root border-b-2 ">{showHeaderAndFooter && <Header />}</header>
+            <header className="padding-root border-b-2">{showHeaderAndFooter && <Header />}</header>
             <main className={`${showHeaderAndFooter ? 'padding-root' : ''}`}>{children}</main>
-            <footer className="padding-root">{showHeaderAndFooter && <Footer />}</footer>
+            <footer className="padding-root mt-5 border-t-2">{showHeaderAndFooter && <Footer />}</footer>
         </StoreProvider>
       </body>
     </html>

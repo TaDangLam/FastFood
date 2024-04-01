@@ -8,7 +8,6 @@ import upload from '../configs/multerConfig.js';
 Router.get('/', productController.getAllProduct);
 Router.get('/search', productController.searchProduct);
 Router.post('/add-product', authMiddleWare.verifyTokenAdmin, upload.any(), productController.createProduct);
-
 Router.get('/get-detail/:pid', productController.getDetailProduct);
 Router.get('/getAll-product-cate/:cid', productController.getProductByCategory);
 Router.get('/getFew-product-cate/:cid', productController.getFewProductByCategory);
