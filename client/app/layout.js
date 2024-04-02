@@ -18,6 +18,7 @@ export default function RootLayout({ children }) {
   const pathname = usePathname();
   const isAuthOrDashboardPage = pathname.startsWith('/auth') || pathname.startsWith('/dashboard');
   const showHeaderAndFooter = !isAuthOrDashboardPage;
+  const footerClass = !isAuthOrDashboardPage ? 'mt-5' : '';
 
   return (
     <html lang="en">
@@ -25,7 +26,7 @@ export default function RootLayout({ children }) {
         <StoreProvider>
             <header className="padding-root border-b-2">{showHeaderAndFooter && <Header />}</header>
             <main className={`${showHeaderAndFooter ? 'padding-root' : ''}`}>{children}</main>
-            <footer className="padding-root mt-5 border-t-2">{showHeaderAndFooter && <Footer />}</footer>
+            <footer className={`padding-root border-t-2 ${footerClass}`}>{showHeaderAndFooter && <Footer />}</footer>
         </StoreProvider>
       </body>
     </html>

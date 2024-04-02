@@ -13,7 +13,7 @@ Router.get('/cancelled', authMiddleWare.verifyCustomer, OrderController.getAllCa
 Router.post('/create-order', authMiddleWare.verifyCustomer, OrderController.createOrder);
 Router.get('/get-detail-order/:oid', authMiddleWare.verifyCustomer, OrderController.getDetailOrder);
 Router.patch('/update-to-processing/:oid', authMiddleWare.verifyTokenStaff, OrderController.updateStatusToProcessing);
-Router.patch('/update-to-delivered/:oid', authMiddleWare.verifyTokenStaff, OrderController.updateStatusToDeliverd);
+Router.patch('/update-to-delivered/:oid', authMiddleWare.verifyCustomer, OrderController.updateStatusToDeliverd);
 Router.patch('/update-to-cancel/:oid', authMiddleWare.verifyTokenStaff, OrderController.updateStatusToCancel);
 Router.patch('/update-order/:oid', authMiddleWare.verifyCustomer, OrderController.updateOrder);
 Router.delete('/delete-order/:oid', authMiddleWare.verifyTokenStaff, OrderController.deleteOrder)

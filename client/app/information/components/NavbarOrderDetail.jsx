@@ -3,7 +3,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useDispatch } from "react-redux";
 import Link from "next/link";
 
-const NavbarAddress = () => {
+const NavbarOrderDetail = () => {
     const router = useRouter();
     const pathname = usePathname();
     const dispatch = useDispatch();
@@ -35,4 +35,4 @@ const NavbarAddress = () => {
      );
 }
  
-export default NavbarAddress;
+export default NavbarOrderDetail;

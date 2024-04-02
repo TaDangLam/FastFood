@@ -1,11 +1,13 @@
 'use client'
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import Swal from "sweetalert2";
 
-import { getAllOrderUser, getAllOrderPendingUser, getAllOrderProcessingUser, getAllOrderDeliveredUser, getAllOrderCancleUser } from "@/app/api/route";
+import { getAllOrderUser, getAllOrderPendingUser, getAllOrderProcessingUser, getAllOrderDeliveredUser, getAllOrderCancleUser, updateStatusOrderToDelivered } from "@/app/api/route";
 
 const Order = () => {
+    const router = useRouter();
     const accessToken = sessionStorage.getItem('accessToken');
     const path = useSearchParams().get('path');
     const [orders, setOrders] = useState([]);
@@ -82,9 +84,34 @@ const Order = () => {
         }
     }, [path]);
 
-    const renderIsPaid = (isPaid) => {
-        return isPaid ? "Yes" : "No";
-    };
+    const updateToDelivered = async(id, accessToken) => {
+        Swal.fire({
+            title: "Are you Recevied Order?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes"
+            }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    await updateStatusOrderToDelivered(id, accessToken);
+                    Swal.fire({
+                        title: "Success!",
+                        icon: "success"
+                    });
+                    router.push('/information/order?path=Delivered')
+                } catch (error) {
+                    console.log(error)
+                    Swal.fire({
+                        title: "Error!",
+                        text: `${error}`,
+                        icon: "error"
+                    });
+                }
+            }
+        });
+    }
 
     return (
         <div className="w-full h-full p-2">
@@ -103,10 +130,15 @@ const Order = () => {
                                         <div className="w-full h-1/2 text-lg">{ord.productId.name}</div>
                                         <div className="w-full h-1/2"><span className="font-semibold">Quantity:</span> {ord.quantity}</div>
                                     </div>
-                                    <div className="w-1/12 font-semibold text-right">$ {ord.totalPriceProduct}</div>
+                                    <div className="w-1/12 font-semibold text-right">$ {parseFloat(ord.totalPriceProduct).toFixed(2)}</div>
                                 </Link>
                             ))}
                             <div className="w-full flex gap-2 justify-end items-center"><span className="font-semibold">Payment: </span><span className="font-semibold text-2xl text-[#ff6a6d]">{order.totalPrice} $</span></div>
+                            {order.status === 'Processing' && (
+                                <div className="w-full flex gap-3 justify-end items-center">
+                                    <div onClick={() => updateToDelivered(order._id, accessToken)} className="flex items-center justify-center font-semibold bg-[#ff8f6e] w-1/6 hover:opacity-70 text-lg text-white p-1 rounded-xl cursor-pointer duration-300">Received</div>
+                                </div>
+                            )}
                         </div>
                     ))}
                 </div>

@@ -503,3 +503,33 @@ export const getAllOrderCancleAdmin = async(accessToken) => {
         throw error;
     }
 }
+
+export const updateStatusOrderToProcessing = async(id, accessToken) => {
+    try {
+        const response = await axios.patch(`${baseUrl}/order/update-to-processing/${id}`, null, {headers: {'token': `Bearer ${accessToken}` }});
+        return(response.data.data);
+    } catch (error) {
+        console.log('Update Status Order Processing Staff error: ', error);
+        throw error;
+    }
+}
+
+export const updateStatusOrderToDelivered = async(id, accessToken) => {
+    try {
+        const response = await axios.patch(`${baseUrl}/order/update-to-delivered/${id}`, null, {headers: {'token': `Bearer ${accessToken}` }});
+        return(response.data.data);
+    } catch (error) {
+        console.log('Update Status Order Processing Delivered error: ', error);
+        throw error;
+    }
+}
+
+export const updateStatusOrderToCancel = async(id, accessToken) => {
+    try {
+        const response = await axios.patch(`${baseUrl}/order/update-to-cancel/${id}`, null, {headers: {'token': `Bearer ${accessToken}` }});
+        return(response.data.data);
+    } catch (error) {
+        console.log('Update Status Order Cancel Staff error: ', error);
+        throw error;
+    }
+}

@@ -16,6 +16,7 @@ const InformationLayout = ({ children }) => {
     const isAddressPage = pathname.startsWith('/information/address/newAddress');
     const isEditAddressPage = pathname.startsWith('/information/address/editAddress');
     const showHeaderAndFooter = !isAuthOrDashboardPage && !isAddressPage && !isEditAddressPage && !isOrderStatus;
+    const isStaffOnOrderDetailPage = user && user.role === 'staff' && isAuthOrDashboardPage;
 
     return ( 
         <div className="margin-component mt-[31px] flex flex-col gap-5 py-5">
@@ -24,17 +25,17 @@ const InformationLayout = ({ children }) => {
             </div>
             <div className="flex w-full gap-5">
                 <div className="w-3/12">
-                    {user && user.role === 'staff' ? (
-                                <NavbarStaff />
-                        ) : showHeaderAndFooter ? (
-                                <NavbarInfo />
-                        ) : isAuthOrDashboardPage ? (
-                                <NavbarOrderDetail />
-                        ) : isOrderStatus  ? (
-                                <NavbarOrder />
-                        ) : (
-                                <NavbarAddress />
-                        )}
+                   {isStaffOnOrderDetailPage ? (
+                        <NavbarOrderDetail />
+                    ) : user && user.role === 'staff' ? (
+                        <NavbarStaff />
+                    ) : showHeaderAndFooter ? (
+                        <NavbarInfo />
+                    ) : isOrderStatus ? (
+                        <NavbarOrder />
+                    ) : (
+                        <NavbarAddress />
+                    )}
                 </div>
                 <div className='w-9/12 rounded-xl border-2 px-2 py-5'>{children}</div>
             </div>

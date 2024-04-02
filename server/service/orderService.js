@@ -91,7 +91,7 @@ const orderService = {
     },
     getAllCancelledOrderForUser: async(userId) => {
         try {
-            const orders = await Order.find({ orderBy: userId, status: 'Cancled' })
+            const orders = await Order.find({ orderBy: userId, status: 'Cancel' })
                 .populate({path: 'orderBy', select: '_id name email phone'})
                 .populate({path: 'paymentType', select: '_id name'})
                 .populate({path: 'address', select: '_id street city province'})
@@ -250,7 +250,7 @@ const orderService = {
     },
     getAllCancelledOrderForAdmin: async() => {
         try {
-            const orders = await Order.find({ status: 'Cancled' })
+            const orders = await Order.find({ status: 'Cancel' })
                 .populate({path: 'orderBy', select: '_id name email phone'})
                 .populate({path: 'paymentType', select: '_id name'})
                 .populate({path: 'address', select: '_id street city province'})
