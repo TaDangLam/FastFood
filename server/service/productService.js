@@ -26,8 +26,8 @@ const productService = {
             const products = await Product.find({
                 $or: [
                     { name: { $regex: keyword, $options: 'i' } },
-                    { title: { $regex: keyword, $options: 'i' } },
-                    { desc: { $regex: keyword, $options: 'i' } }
+                    // { title: { $regex: keyword, $options: 'i' } },
+                    // { desc: { $regex: keyword, $options: 'i' } }
                 ]
             }).populate('categoryId')
               .populate('reviewId');
@@ -128,13 +128,34 @@ const productService = {
             throw new Error(error.message);
         }
     },
-    updateStatusProduct: async(pid) => {
+    updateStatusSoldoutProduct: async(pid) => {
         try {
             const product = await Product.findById(pid);
             if(!product){
                 throw new Error('Product is not found');
             }
-            product.status = (product.status === 'Stock') ? 'SoldOut' : 'Stock';
+            if(product.status === 'Stock'){
+                product.status = 'SoldOut';
+            }
+            await product.save();
+            return ({
+                status: 'OK',
+                message: 'Updated Product Status Successfully',
+                data: product
+            });
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    },
+    updateStatusStockProduct: async(pid) => {
+        try {
+            const product = await Product.findById(pid);
+            if(!product){
+                throw new Error('Product is not found');
+            }
+            if(product.status === 'SoldOut'){
+                product.status = 'Stock';
+            }
             await product.save();
             return ({
                 status: 'OK',

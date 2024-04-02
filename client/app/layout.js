@@ -16,7 +16,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({ children }) {
   const pathname = usePathname();
-  const isAuthOrDashboardPage = pathname.startsWith('/auth') || pathname.startsWith('/dashboard') || pathname.startsWith('/staff');
+  const isAuthOrDashboardPage = pathname.startsWith('/auth') || pathname.startsWith('/dashboard');
   const showHeaderAndFooter = !isAuthOrDashboardPage;
 
   return (

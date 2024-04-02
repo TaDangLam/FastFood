@@ -2,14 +2,20 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
 
 import { getAllProduct, removeProduct } from "@/app/api/route";
-import { useRouter } from "next/navigation";
+import Pagination from "@/components/Pagination";
 
 const Product = () => {
   const [dataProduct, setDataProduct] = useState([]);
   const accessToken = sessionStorage.getItem('accessToken');
   const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 15;
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = dataProduct.slice(indexOfFirstProduct, indexOfLastProduct);
   const router = useRouter()
 
   const border1 = "border border-slate-400";
@@ -19,9 +25,9 @@ const Product = () => {
     getAllProductForAdmin();
   }, []);
 
-  const getAllProductForAdmin = async(accessToken) => {
+  const getAllProductForAdmin = async() => {
     try {
-      const data = await getAllProduct(accessToken);
+      const data = await getAllProduct();
       setDataProduct(data);
     } catch (error) {
       console.log(error);
@@ -66,7 +72,7 @@ const Product = () => {
           Loading......
         </div>
       ) : (
-        <div>
+        <div className="flex flex-col gap-3 w-full h-full">
           <Link
             href={"/dashboard/product/new"}
             className="bg-[#4b6cb7] text-white rounded-md py-1 px-2 w-2/12 h-1/6 text-center"
@@ -87,7 +93,7 @@ const Product = () => {
               </tr>
             </thead>
             <tbody>
-              {dataProduct.map((product) => {
+              {currentProducts.map((product) => {
                 return (
                   <tr key={product._id}>
                     <td className={`${border1} w-28 h-full`}><img src={`${process.env.NEXT_PUBLIC_API_UPLOAD}/${product.name}/${product.images[0]}`}/></td>
@@ -150,6 +156,14 @@ const Product = () => {
               })}
             </tbody>
           </table>
+          <div className="w-full flex justify-center">
+            <Pagination 
+              totalProduct={dataProduct.length} 
+              productsPerPage={productsPerPage} 
+              setCurrentPage={setCurrentPage}
+              currentPage={currentPage}
+            />
+          </div>
         </div>
       )}
     </div>

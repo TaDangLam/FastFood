@@ -255,7 +255,6 @@ const User = () => {
                           </div>
                       </div>
                     )}
-                    
                   </td>
                 </tr>
               ))}

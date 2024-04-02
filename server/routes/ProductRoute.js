@@ -11,7 +11,8 @@ Router.post('/add-product', authMiddleWare.verifyTokenAdmin, upload.any(), produ
 Router.get('/get-detail/:pid', productController.getDetailProduct);
 Router.get('/getAll-product-cate/:cid', productController.getProductByCategory);
 Router.get('/getFew-product-cate/:cid', productController.getFewProductByCategory);
-Router.patch('/update-status-product/:pid', authMiddleWare.verifyTokenStaff, productController.updateStatusProduct);
+Router.patch('/update-status-to-soldout/:pid', authMiddleWare.verifyTokenStaff, productController.updateStatusSoldoutProduct);
+Router.patch('/update-status-to-stock/:pid', authMiddleWare.verifyTokenStaff, productController.updateStatusStockProduct);
 Router.delete('/delete-product/:pid', authMiddleWare.verifyTokenAdmin, productController.deleteProduct);
 Router.patch('/update-product/:pid', authMiddleWare.verifyTokenAdmin, upload.any(), productController.updateProduct);
 

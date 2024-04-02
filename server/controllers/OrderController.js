@@ -123,7 +123,39 @@ const OrderController = {
         } catch (error) {
             res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: error.message });
         }
-    }
+    },
+    getAllProcessingOrderForAdmin: async(req, res) => {
+        try {
+            const response = await orderService.getAllProcessingOrderForAdmin();
+            res.status(StatusCodes.OK).json(response);
+        } catch (error) {
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: error.message });
+        }
+    },
+    getAllDeliveredOrderForAdmin: async(req, res) => {
+        try {
+            const response = await orderService.getAllDeliveredOrderForAdmin();
+            res.status(StatusCodes.OK).json(response);
+        } catch (error) {
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: error.message });
+        }
+    },
+    getAllCancelledOrderForAdmin: async(req, res) => {
+        try {
+            const response = await orderService.getAllCancelledOrderForAdmin();
+            res.status(StatusCodes.OK).json(response);
+        } catch (error) {
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: error.message });
+        }
+    },
+    getAllOrderPendingForAdmin: async(req, res) => {
+        try {
+            const response = await orderService.getAllOrderPendingForAdmin();
+            res.status(StatusCodes.OK).json(response);
+        } catch (error) {
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: error.message });
+        }
+    },
 }
 
 export default OrderController;

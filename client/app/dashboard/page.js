@@ -9,7 +9,7 @@ import { Bubble, Line, Pie, Doughnut, Bar, Area } from "react-chartjs-2";
 import { Chart as ChartJS, defaults } from "chart.js/auto";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
-import { getAllOrderAdmin, getAllProduct, getAllStaff, getAllCustomer } from "../api/route";
+import { getAllOrderDeliveredAdmin, getAllProduct, getAllStaff, getAllCustomer } from "../api/route";
 import { useSelector } from "react-redux";
 
 const Dashboard = () => {
@@ -40,7 +40,7 @@ const Dashboard = () => {
 
     const fetchProduct = async() => {
         try {
-            const data = await getAllProduct(accessToken);
+            const data = await getAllProduct();
             setProduct(data);
         } catch (error) {
             console.log(error);
@@ -49,14 +49,14 @@ const Dashboard = () => {
 
     const fetchOrder = async() => {
         try {
-            const data = await getAllOrderAdmin(accessToken);
+            const data = await getAllOrderDeliveredAdmin(accessToken);
             setOrder(data);
         } catch (error) {
             console.log(error);
         }
     }
 
-
+    console.log(order);
     useEffect(() => {
         fetchCustomer();
         fetchStaff();

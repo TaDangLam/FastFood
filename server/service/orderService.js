@@ -193,16 +193,76 @@ const orderService = {
         }
     },
     deleteOrder: async(oid) => {
-    try {
-        await Order.findByIdAndDelete(oid);
-        return ({
-            status: 'OK',
-            message: 'Delete Order is Success'
-        })
-    } catch (error) {
-        throw new Error(error.message);
-    }        
-    }
+        try {
+            await Order.findByIdAndDelete(oid);
+            return ({
+                status: 'OK',
+                message: 'Delete Order is Success'
+            })
+        } catch (error) {
+            throw new Error(error.message);
+        }        
+    },
+    getAllProcessingOrderForAdmin: async() => {
+        try {
+            const orders = await Order.find({ status: 'Processing' })
+                .populate({path: 'orderBy', select: '_id name email phone'})
+                .populate({path: 'paymentType', select: '_id name'})
+                .populate({path: 'address', select: '_id street city province'})
+                .populate('orderDetail.productId');
+            return ({
+                status: 'OK',
+                data: orders
+            });
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    },
+    getAllDeliveredOrderForAdmin: async() => {
+        try {
+            const orders = await Order.find({ status: 'Delivered' })
+                .populate({path: 'orderBy', select: '_id name email phone'})
+                .populate({path: 'paymentType', select: '_id name'})
+                .populate({path: 'address', select: '_id street city province'})
+                .populate('orderDetail.productId');
+            return ({
+                status: 'OK',
+                data: orders
+            });
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    },
+    getAllOrderPendingForAdmin: async() => {
+        try {
+            const orders = await Order.find({ status: 'Pending' })
+                .populate({path: 'orderBy', select: '_id name email phone'})
+                .populate({path: 'paymentType', select: '_id name'})
+                .populate({path: 'address', select: '_id street city province'})
+                .populate('orderDetail.productId');
+            return ({
+                status: 'OK',
+                data: orders
+            });
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    },
+    getAllCancelledOrderForAdmin: async() => {
+        try {
+            const orders = await Order.find({ status: 'Cancled' })
+                .populate({path: 'orderBy', select: '_id name email phone'})
+                .populate({path: 'paymentType', select: '_id name'})
+                .populate({path: 'address', select: '_id street city province'})
+                .populate('orderDetail.productId');
+            return ({
+                status: 'OK',
+                data: orders
+            });
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    },
 };
 
 export default orderService;

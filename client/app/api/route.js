@@ -58,13 +58,9 @@ export const deleteCategory = async(cid, accessToken, dispatch) => {
 }
 
 // ---------------------------- Product -----------------------------
-export const getAllProduct = async(accessToken) => {
+export const getAllProduct = async() => {
     try {
-        const response = await axios.get(`${baseUrl}/product`, {
-            headers: {
-                'token': `Bearer ${accessToken}`
-            }
-        });
+        const response = await axios.get(`${baseUrl}/product`);
         return response.data.data;
     } catch (error) {
         console.log('Get All Product Error: ', error);
@@ -151,6 +147,34 @@ export const removeProduct = async(id, accessToken) => {
         return response.data.message;
     } catch (error) {
         console.log('Delete Product error: ', error);
+        throw error;
+    }
+}
+
+export const updateToSoldoutProduct = async(id, accessToken) => {
+    try {
+        const response = await axios.patch(`${baseUrl}/product/update-status-to-soldout/${id}`, null, {
+            headers: {
+                'token': `Bearer ${accessToken}`
+            }
+        });
+        return response.data.data;
+    } catch (error) {
+        console.log('Update Product To Soldout error: ', error);
+        throw error;
+    }
+}
+
+export const updateToStockProduct = async(id, accessToken) => {
+    try {
+        const response = await axios.patch(`${baseUrl}/product/update-status-to-stock/${id}`, null, {
+            headers: {
+                'token': `Bearer ${accessToken}`
+            }
+        });
+        return response.data.data;
+    } catch (error) {
+        console.log('Update Product To Stock error: ', error);
         throw error;
     }
 }
@@ -356,7 +380,6 @@ export const removeAddress = async(addressId, accessToken, dispatch) => {
     }
 }
 
-
 // ---------------------------- Order  -----------------------------
 export const getAllOrderAdmin = async(accessToken) => {
     try {
@@ -437,6 +460,46 @@ export const getAllOrderCancleUser = async(accessToken) => {
         return(response.data.data);
     } catch (error) {
         console.log('Get All Order User error: ', error);
+        throw error;
+    }
+}
+
+export const getAllOrderPendingAdmin = async(accessToken) => {
+    try {
+        const response = await axios.get(`${baseUrl}/order/pending-for-admin`, {headers: {'token': `Bearer ${accessToken}` }});
+        return(response.data.data);
+    } catch (error) {
+        console.log('Get All Order Pending Admin error: ', error);
+        throw error;
+    }
+}
+
+export const getAllOrderProcessingAdmin = async(accessToken) => {
+    try {
+        const response = await axios.get(`${baseUrl}/order/processing-for-admin`, {headers: {'token': `Bearer ${accessToken}` }});
+        return(response.data.data);
+    } catch (error) {
+        console.log('Get All Order Processing Admin error: ', error);
+        throw error;
+    }
+}
+
+export const getAllOrderDeliveredAdmin = async(accessToken) => {
+    try {
+        const response = await axios.get(`${baseUrl}/order/delivered-for-admin`, {headers: {'token': `Bearer ${accessToken}` }});
+        return(response.data.data);
+    } catch (error) {
+        console.log('Get All Order Delivered Admin error: ', error);
+        throw error;
+    }
+}
+
+export const getAllOrderCancleAdmin = async(accessToken) => {
+    try {
+        const response = await axios.get(`${baseUrl}/order/cancelled-for-admin`, {headers: {'token': `Bearer ${accessToken}` }});
+        return(response.data.data);
+    } catch (error) {
+        console.log('Get All Order Cancel Admin error: ', error);
         throw error;
     }
 }

@@ -71,10 +71,19 @@ const productController = {
             res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: error.message });
         }
     },
-    updateStatusProduct: async(req, res) => {
+    updateStatusSoldoutProduct: async(req, res) => {
         try {
             const { pid } = req.params;
-            const resposne = await productService.updateStatusProduct(pid);
+            const resposne = await productService.updateStatusSoldoutProduct(pid);
+            res.status(StatusCodes.OK).json(resposne);
+        } catch (error) {
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: error.message });
+        }
+    },
+    updateStatusStockProduct: async(req, res) => {
+        try {
+            const { pid } = req.params;
+            const resposne = await productService.updateStatusStockProduct(pid);
             res.status(StatusCodes.OK).json(resposne);
         } catch (error) {
             res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: error.message });

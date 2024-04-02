@@ -17,5 +17,9 @@ Router.patch('/update-to-delivered/:oid', authMiddleWare.verifyTokenStaff, Order
 Router.patch('/update-to-cancel/:oid', authMiddleWare.verifyTokenStaff, OrderController.updateStatusToCancel);
 Router.patch('/update-order/:oid', authMiddleWare.verifyCustomer, OrderController.updateOrder);
 Router.delete('/delete-order/:oid', authMiddleWare.verifyTokenStaff, OrderController.deleteOrder)
+Router.get('/pending-for-admin', authMiddleWare.verifyTokenStaff, OrderController.getAllOrderPendingForAdmin);
+Router.get('/processing-for-admin', authMiddleWare.verifyTokenStaff, OrderController.getAllProcessingOrderForAdmin);
+Router.get('/delivered-for-admin', authMiddleWare.verifyTokenStaff, OrderController.getAllDeliveredOrderForAdmin);
+Router.get('/cancelled-for-admin', authMiddleWare.verifyTokenStaff, OrderController.getAllCancelledOrderForAdmin);
 
 export const OrderRoute = Router;

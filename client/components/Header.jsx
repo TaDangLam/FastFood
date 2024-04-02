@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { FaSearch, FaUserAlt, FaShoppingCart, FaFacebookSquare, FaTiktok  } from "react-icons/fa";
 import { IoLogoInstagram } from "react-icons/io5";
 import { FaUser } from "react-icons/fa";
+import { IoIosNotifications } from "react-icons/io";
 import Tippy from '@tippyjs/react/headless';
 
 import Popper from "./Popper";
@@ -21,7 +22,7 @@ const Header = () => {
         e.preventDefault();
         router.push(`/search?keyword=${searchText}`);
     }
-
+    
     return(
         <div className='margin-component h-full'>
             <div className="flex w-full h-1/2 pt-2">
@@ -50,26 +51,39 @@ const Header = () => {
                         </form>
                     </div>
                 </div>
-                <div className='w-3/12 flex items-center gap-5 pl-10 '>
-                    <div className="w-1/2 p-4 text-center">
-                        <Link href={'/cart'} className="flex items-center justify-center gap-2 hover:text-[#ffc139] duration-300 font-semibold">
-                            <FaShoppingCart /> Cart
+                {user && user.role === 'staff' ? (
+                    <div className="w-3/12 flex items-center gap-5 pl-10 ">
+                        <Link href={'/information/staff/managerStatusProduct'} className="flex items-center gap-2 cursor-pointer text-[#ff9b49] duration-300 font-semibold justify-center w-1/2">
+                                <FaUser />
+                                {user.name} (Staff)
                         </Link>
+                        <Link href={'/information'} className="flex items-center gap-2 cursor-pointer duration-300 font-semibold w-1/2 justify-center text-2xl ">
+                                <IoIosNotifications  />
+                        </Link>
+                        
                     </div>
-                    {user && Object.keys(user).length !== 0 ? (
-                        <Link href={'/information'} className="flex items-center gap-2 cursor-pointer text-[#ff9b49] duration-300 font-semibold">
-                            <FaUser />
-                            {user.name}
-                        </Link>
-                    ) : (
-                        <div className="w-1/2 p-4">
-                            <Link href={'/auth'} className="flex items-center justify-center gap-2 hover:text-[#ffc139] duration-300 font-semibold">
-                                <FaUserAlt />
-                                Login
+                ) : (
+                    <div className='w-3/12 flex items-center gap-5 pl-10 '>
+                        <div className="w-1/2 p-4 text-center">
+                            <Link href={'/cart'} className="flex items-center justify-center gap-2 hover:text-[#ffc139] duration-300 font-semibold">
+                                <FaShoppingCart /> Cart
                             </Link>
                         </div>
-                    )}
-                </div>
+                        {user && Object.keys(user).length !== 0 ? (
+                            <Link href={'/information'} className="flex items-center gap-2 cursor-pointer text-[#ff9b49] duration-300 font-semibold">
+                                <FaUser />
+                                {user.name}
+                            </Link>
+                        ) : (
+                            <div className="w-1/2 p-4">
+                                <Link href={'/auth'} className="flex items-center justify-center gap-2 hover:text-[#ffc139] duration-300 font-semibold">
+                                    <FaUserAlt />
+                                    Login
+                                </Link>
+                            </div>
+                        )}
+                    </div>
+                )}
             </div>
             <div className=" w-full h-1/2 ">
                 <div className="flex items-center w-full h-full">
