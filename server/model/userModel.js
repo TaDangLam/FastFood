@@ -9,7 +9,13 @@ const UserSchema = new mongoose.Schema ({
     confirmPassword: {type: String, required: true},
     phone: {type: String, required: true},
     role: {type: String, enum: userEnum, default: 'customer'},
-    address: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Address' }]
+    address: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Address' }],
+    notification: [{
+        _id: false,
+        message: {type: String},
+        isSeen: {type: Boolean, default: false},
+        isNew: {type: Boolean, default: true}
+    }]
 }, {
     timestamps: true
 })

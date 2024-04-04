@@ -30,12 +30,16 @@ const NavbarStaff = () => {
                     </Link>
                     <Link
                         href={"/information/staff/managerOrder?status=Pending"}
-                        aria-current="true"
                         className={pathname === '/information/staff/managerOrder' ? active : inactiveLink}
                     >
                         Order Management
                     </Link>
-
+                    <Link
+                        href={"/information/staff/notification"}
+                        className={pathname === '/information/staff/notification' ? active : inactiveLink}
+                    >
+                        Notification
+                    </Link>
                     <button onClick={handleLogout} className={inactiveLink}>
                         Log out
                     </button>

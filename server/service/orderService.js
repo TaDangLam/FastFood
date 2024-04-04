@@ -1,4 +1,6 @@
+import { io } from '../index.js';
 import { Order } from '../model/orderModel.js';
+import { User } from '../model/userModel.js';
 
 const orderService = {
     getAllOrder: async() => {
@@ -107,7 +109,22 @@ const orderService = {
     createOrder: async(orderData) => {
         try {
             const { orderBy, paymentType, totalPrice, orderDetail, address, isPaid } = orderData;
+            const user = await User.findById(orderBy);
+
+            if (!user) {
+                throw new Error('User not found');
+            }
+
             const newOrder = await Order.create({ orderBy, paymentType, totalPrice, orderDetail, address, isPaid });
+            // await User.updateMany({ role: 'staff' }, { notification: `${user.name} placed an order. Please go to accept the order` });
+            const newNotification = {
+                message: `${user.name} placed an order. Please go to accept the order`,
+                isSeen: false,
+                isNew: true
+            };
+            await User.updateMany({ role: 'staff' }, { $push: { notification: newNotification } });
+            // io.emit('newOrderNotification', { message: `${user.name} placed an order. Please go to accept the order` });
+            io.emit('newOrderNotification', newNotification);
             return ({
                 message: 'Create Order is success',
                 status: 'OK',

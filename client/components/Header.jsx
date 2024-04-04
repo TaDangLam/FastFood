@@ -1,5 +1,5 @@
 'use client'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useDispatch, useSelector } from "react-redux";
@@ -7,6 +7,7 @@ import { FaSearch, FaUserAlt, FaShoppingCart, FaFacebookSquare, FaTiktok  } from
 import { IoLogoInstagram } from "react-icons/io5";
 import { FaUser } from "react-icons/fa";
 import { IoIosNotifications } from "react-icons/io";
+import { io } from 'socket.io-client';
 import Tippy from '@tippyjs/react/headless';
 
 import Popper from "./Popper";
@@ -15,6 +16,8 @@ const Header = () => {
     // const user = useSelector(state => state.auth.user);
     const user = JSON.parse(sessionStorage.getItem('user'));
     const [searchText, setSearchText] = useState('');
+    const [notification, setNotification] = useState(user?.notification);
+    const [visibleNotifications, setVisibleNotifications] = useState([]);
     const dispatch = useDispatch();
     const router = useRouter();
     
@@ -23,6 +26,49 @@ const Header = () => {
         router.push(`/search?keyword=${searchText}`);
     }
     
+    // useEffect(() => {
+    //     const socket = io(`${process.env.NEXT_PUBLIC_BACKEND}`);
+    //     if (user && user.role === 'staff') {
+    //         socket.on("newOrderNotification", (data) => {
+    //             setNotification((prev) => [...prev, data.message]);
+    //         }); 
+    //     }
+    //     return () => socket.disconnect();
+    // }, []);
+
+    // useEffect(() => {
+    //     if (user) {
+    //         const updatedUser = { ...user, notification: notification };
+    //         sessionStorage.setItem('user', JSON.stringify(updatedUser));
+    //     }
+    // }, [notification]);
+    useEffect(() => {
+        const socket = io(`${process.env.NEXT_PUBLIC_BACKEND}`);
+        if (user && user.role === 'staff') {
+            socket.on("newOrderNotification", (data) => {
+                const newNotification = { message: data.message, isSeen: false, isNew: true };
+                setNotification((prev) => [newNotification, ...prev]);
+                updateNotifications(newNotification);
+            }); 
+        }
+        return () => socket.disconnect();
+    }, []);
+
+    const updateNotifications = (newNotification) => {
+        const updatedNotifications = [newNotification, ...notification.filter((_, index) => index < 4)];
+        // setNotification(updatedNotifications);
+        setVisibleNotifications(updatedNotifications);
+    };
+
+    useEffect(() => {
+    if (user) {
+        const updatedUser = { ...user, notification: notification };
+        sessionStorage.setItem('user', JSON.stringify(updatedUser));
+    }
+    }, [notification]);
+    console.log('notification: ', notification);
+    console.log('Visable: ', visibleNotifications);
+
     return(
         <div className='margin-component h-full'>
             <div className="flex w-full h-1/2 pt-2">
@@ -52,15 +98,54 @@ const Header = () => {
                     </div>
                 </div>
                 {user && user.role === 'staff' ? (
-                    <div className="w-3/12 flex items-center gap-5 pl-10 ">
+                    <div className="w-3/12 flex items-center gap-5 px-5">
                         <Link href={'/information/staff/managerStatusProduct'} className="flex items-center gap-2 cursor-pointer text-[#ff9b49] duration-300 font-semibold justify-center w-1/2">
                                 <FaUser />
                                 {user.name} (Staff)
                         </Link>
-                        <Link href={'/information'} className="flex items-center gap-2 cursor-pointer duration-300 font-semibold w-1/2 justify-center text-2xl ">
-                                <IoIosNotifications  />
-                        </Link>
-                        
+                        <Tippy
+                            interactive
+                            arrow
+                            // visible
+                            trigger="mouseenter focus"
+                            delay={200}
+                            placement='bottom'
+                            render={attrs => (
+                                <div className="box" tabIndex="-1" {...attrs}>
+                                    <Popper>
+                                        <div className="border-2 rounded-xl bg-slate-100">
+                                            {visibleNotifications  && visibleNotifications.length > 0 ? (
+                                                <div className="p-3">
+                                                    {visibleNotifications.map(note => (
+                                                        <div className='w-[500px] h-full p-6 border-b-2 hover:bg-slate-300 cursor-pointer'>
+                                                            {note.message}
+                                                        </div>
+                                                    ))}
+                                                    <Link href={'/information/staff/notification'} className="flex items-center justify-center p-6 ">
+                                                        All Notification
+                                                    </Link> 
+                                                </div>
+                                            ) : (
+                                                <div className="p-3">
+                                                    {notification.slice(0, 5).map(note => (
+                                                        <div className='w-[500px] h-full p-6 border-b-2 hover:bg-slate-300 cursor-pointer '>
+                                                            {note.message}
+                                                        </div>
+                                                    ))}
+                                                    <Link href={'/information/staff/notification'} className="flex items-center justify-center p-6 text-[#4b6cb7] font-bold hover:bg-slate-300">
+                                                        All Notification
+                                                    </Link> 
+                                                </div>
+                                            )}
+                                        </div>
+                                    </Popper>
+                                </div>
+                            )}
+                        >
+                            <Link href={'/information'} className="flex items-center gap-2 cursor-pointer duration-300 font-semibold w-1/2 justify-center text-xl">
+                                <IoIosNotifications  /> ({visibleNotifications?.length}) 
+                            </Link>
+                        </Tippy>    
                     </div>
                 ) : (
                     <div className='w-3/12 flex items-center gap-5 pl-10 '>

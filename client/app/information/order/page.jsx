@@ -113,6 +113,10 @@ const Order = () => {
         });
     }
 
+    const Review = async(id, accessToken) => {
+        
+    }
+
     return (
         <div className="w-full h-full p-2">
             {orders && orders.length > 0 ? (
@@ -137,6 +141,11 @@ const Order = () => {
                             {order.status === 'Processing' && (
                                 <div className="w-full flex gap-3 justify-end items-center">
                                     <div onClick={() => updateToDelivered(order._id, accessToken)} className="flex items-center justify-center font-semibold bg-[#ff8f6e] w-1/6 hover:opacity-70 text-lg text-white p-1 rounded-xl cursor-pointer duration-300">Received</div>
+                                </div>
+                            )}
+                            {order.status === 'Delivered' && (
+                                <div className="w-full flex gap-3 justify-end items-center">
+                                    <div onClick={() => updateToDelivered(order._id, accessToken)} className="flex items-center justify-center font-semibold bg-[#ffb170] w-1/6 hover:opacity-70 text-lg text-white p-1 rounded-xl cursor-pointer duration-300">Review</div>
                                 </div>
                             )}
                         </div>
