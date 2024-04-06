@@ -7,6 +7,7 @@ import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import { getAllProductByCategory } from '@/app/api/route';
 import Pagination from '@/components/Pagination';
+import { setAllProductByCategory } from '@/lib/features/product/productSlice';
 
 const Category = () => {
     const { id } = useParams();
@@ -14,6 +15,7 @@ const Category = () => {
     const category = useSelector(state => state.category.categories);
     const products = useSelector((state) => state.product.allProductCategory);
     const idCategory = process.env.NEXT_PUBLIC_BURGER_CATEGORY_ID;
+    const [sortOrder, setSortOrder] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const productsPerPage = 9;                                                      // Số sản phẩm trên mỗi trang
     const indexOfLastProduct = currentPage * productsPerPage;                       // chỉ mục cuối
@@ -25,6 +27,26 @@ const Category = () => {
             getAllProductByCategory(id, dispatch);
         }
     }, [id])
+
+    const handleSortChange = (option) => {
+        if (option !== sortOrder) {
+            setSortOrder(option);
+            const sortedProducts = [...products].sort((a, b) => {
+                if (option === 'priceAsc') {
+                    return a.price - b.price;
+                } else if (option === 'priceDesc') {
+                    return b.price - a.price;
+                } else if (option === 'hot') {
+                    return b.sold - a.sold;
+                } else if (option === 'Latest') {
+                    return new Date(b.createdAt) - new Date(a.createdAt)
+                } else {
+                    return new Date(a.createdAt) - new Date(b.createdAt)
+                }
+            });
+            dispatch(setAllProductByCategory(sortedProducts));
+        }
+    };
 
     console.log(currentProducts)
     return ( 
@@ -46,11 +68,15 @@ const Category = () => {
                     <div className='flex justify-end w-full h-1/6 '>
                         <select 
                             className='border-2 p-2 rounded-lg'
-                            // onChange={handleChangeSort}
+                            value={sortOrder} 
+                            onChange={(e) => handleSortChange(e.target.value)}
                         >
-                            <option value="">Sort</option>
-                            <option value="asc">Price: Low to High</option>
-                            <option value="desc">Price: High to Low</option>
+                            <option value=''>Sort</option>
+                            <option value='hot'>Sold: A Lot</option>
+                            <option value="priceAsc">Price: Low to High</option>
+                            <option value="priceDesc">Price: High to Low</option>
+                            <option value="Latest">Time: Latest</option>
+                            <option value="Oldest">Time: Oldest</option>
                         </select>
                     </div>
                     <div className='grid grid-cols-3 gap-6 w-full h-4/6 pb-6'>

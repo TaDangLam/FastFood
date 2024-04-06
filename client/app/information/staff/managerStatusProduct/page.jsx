@@ -111,7 +111,7 @@ const ManagerStatusProduct = () => {
                         type="text"
                         value={searchText}
                         onChange={e => setSearchText(e.target.value)}
-                        placeholder="Search for products..."
+                        placeholder="Search for products (By ID, Name, Status)" 
                         className="appearance-none block w-9/12 h-full bg-[#f1f5f9] text-gray-700 border border-gray-100 rounded-l-xl p-4 focus:outline-none"
                     />
                     <button
@@ -133,7 +133,7 @@ const ManagerStatusProduct = () => {
                                 <td className={border2}>Image</td>
                                 <td className={border2}>Product Name</td>
                                 <td className={border2}>Category</td>
-                                <td className={border2}>Price</td>
+                                <td className={border2}>ID</td>
                                 <td className={border2}>Status</td>
                                 <td className={border2}></td>
                                 </tr>
@@ -148,12 +148,13 @@ const ManagerStatusProduct = () => {
                                                 />
                                             </td>
                                             <td className={`${border1} pl-2`}>
-                                                <Link href={`/productdetail/${product._id}`}>{product.name}</Link>
+                                                <Link className="font-semibold " href={`/productdetail/${product._id}`}>{product.name}</Link>
+                                                {/* <div className="text-sm"><span className="font-medium">ID</span>: <span className="text-gray-500">{product._id}</span></div> */}
                                                 {/* <div className="mt-2">ID: {product._id}</div> */}
                                             </td>
                                             <td className={`${border1} pl-2 text-center`}>{product.categoryId.name}</td>
-                                            <td className={`${border1} text-center`}>{product.price}</td>
-                                            <td className={`${border1} text-center`}>{product.status}</td>
+                                            <td className={`${border1} text-center px-2`}>{product._id}</td>
+                                            <td className={`${border1} text-center px-2`}>{product.status}</td>
                                             <td
                                                 className={`${border1} flex items-center justify-center gap-2 h-full px-2`}
                                             >

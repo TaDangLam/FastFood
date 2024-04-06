@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { GoTrash } from "react-icons/go";
 import { removeProduct, increaseQuantity, decreaseQuantity } from "@/lib/features/cart/cartSlice";
 import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
 
 
 const Cart = () => {
@@ -28,16 +29,32 @@ const Cart = () => {
     }
 
     const handleCheckout = () => {
-        if(accessToken !== null) {
-            router.push('/checkout')
-        }else{
-            router.push('/auth');
+        const soldOutProduct = carts.find(cart => cart.item.status === 'SoldOut');
+        // if(accessToken !== null) {
+        //     router.push('/checkout')
+        // }else{
+        //     router.push('/auth');
+        // }
+        if (soldOutProduct) {
+            Swal.fire({
+                icon: 'error',
+                text: `Product "${soldOutProduct.item.name}" is sold out. Please remove the product from the cart.`,
+                confirmButtonText: 'Yes'
+            });
+        } 
+        else {
+            if (accessToken !== null) {
+                router.push('/checkout')
+            } else {
+                router.push('/auth');
+            }
         }
     }
-
+    
     const sum =  carts.reduce((total, cart) => total + cart.total, 0);
     const roundedSum = sum.toFixed(2);
-
+    
+    console.log(carts)
 
     return ( 
         <div className="margin-component mt-[31px] flex flex-col gap-5">

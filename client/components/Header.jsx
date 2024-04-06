@@ -85,7 +85,7 @@ const Header = () => {
                                 type="text"
                                 value={searchText}
                                 onChange={e => setSearchText(e.target.value)}
-                                placeholder="Search for products..." 
+                                placeholder="Search for products (By ID, Name, Status)" 
                                 className="rounded-l-2xl p-5 h-1/2 w-11/12 bg-slate-100 focus:outline-none "
                             />
                             
@@ -121,7 +121,7 @@ const Header = () => {
                                                             {note.message}
                                                         </div>
                                                     ))}
-                                                    <Link href={'/information/staff/notification'} className="flex items-center justify-center p-6 ">
+                                                    <Link href={'/information/staff/notification'} className="flex items-center justify-center p-6 text-[#4b6cb7] font-bold hover:bg-slate-300">
                                                         All Notification
                                                     </Link> 
                                                 </div>
@@ -155,10 +155,33 @@ const Header = () => {
                             </Link>
                         </div>
                         {user && Object.keys(user).length !== 0 ? (
-                            <Link href={'/information'} className="flex items-center gap-2 cursor-pointer text-[#ff9b49] duration-300 font-semibold">
-                                <FaUser />
-                                {user.name}
-                            </Link>
+                            <Tippy
+                                interactive
+                                arrow
+                                visible
+                                trigger="mouseenter focus"
+                                delay={200}
+                                placement='bottom'
+                                render={attrs => (
+                                    <div className="box" tabIndex="-1" {...attrs}>
+                                        <Popper>
+                                            <div className="border-2 rounded-xl bg-slate-100 w-[200px] h-full">
+                                                <div className="">
+                                                    b
+                                                </div>
+                                                <div>
+                                                    a
+                                                </div>
+                                            </div>
+                                        </Popper>
+                                    </div>
+                                )}
+                            >
+                                <Link href={'/information'} className="flex items-center gap-2 cursor-pointer text-[#ff9b49] duration-300 font-semibold">
+                                    <FaUser />
+                                    {user.name}
+                                </Link>
+                            </Tippy>  
                         ) : (
                             <div className="w-1/2 p-4">
                                 <Link href={'/auth'} className="flex items-center justify-center gap-2 hover:text-[#ffc139] duration-300 font-semibold">

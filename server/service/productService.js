@@ -1,5 +1,6 @@
 import path from 'path';
 import fs from 'fs';
+import mongoose from 'mongoose';
 
 import { Product } from '../model/productModel.js';
 
@@ -21,20 +22,47 @@ const productService = {
             throw new Error(error.message);
         }
     },
+    // searchProduct: async(keyword) => {
+    //     try {
+    //         const products = await Product.find({
+    //             $or: [
+    //                 { name: { $regex: keyword, $options: 'i' } },
+    //                 { desc: { $regex: keyword, $options: 'i' } },
+    //                 // { _id: keyword },
+    //                 { status: { $regex: keyword, $options: 'i' } }
+    //             ]
+    //         }).populate('categoryId')
+    //           .populate('reviewId');
+    //         return({
+    //             status: 'OK',
+    //             data: products
+    //         });
+    //     } catch (error) {
+    //         throw new Error(error.message);
+    //     }
+    // },
     searchProduct: async(keyword) => {
         try {
-            const products = await Product.find({
-                $or: [
-                    { name: { $regex: keyword, $options: 'i' } },
-                    // { title: { $regex: keyword, $options: 'i' } },
-                    // { desc: { $regex: keyword, $options: 'i' } }
-                ]
-            }).populate('categoryId')
-              .populate('reviewId');
-            return({
+            let products;
+            
+            const isValidObjectId = mongoose.Types.ObjectId.isValid(keyword);
+            
+            if (isValidObjectId) {
+                products = await Product.find({ _id: keyword }).populate('categoryId').populate('reviewId');
+            } else {
+                products = await Product.find({
+                    $or: [
+                        { name: { $regex: keyword, $options: 'i' } },
+                        { desc: { $regex: keyword, $options: 'i' } },
+                        { status: { $regex: keyword, $options: 'i' } }
+                    ]
+                }).populate('categoryId').populate('reviewId');
+            }
+            
+            return {
                 status: 'OK',
                 data: products
-            });
+            };
         } catch (error) {
             throw new Error(error.message);
         }

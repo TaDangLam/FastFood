@@ -6,11 +6,14 @@ import {
 import { useEffect } from "react";
 import { useRouter } from 'next/navigation'
 import Swal from "sweetalert2";
+import { useDispatch } from 'react-redux';
 
 import { createOrder } from "@/app/api/route";
+import { clearCart } from "@/lib/features/cart/cartSlice";
 const style = {"layout":"vertical"};
 
 const ButtonWrapper = ({ currency, showSpinner, amount, payload, accessToken }) => {
+    const reduxDispatch = useDispatch();
     const [{ isPending, options }, dispatch] = usePayPalScriptReducer();
     const router = useRouter();
 
@@ -42,7 +45,8 @@ const ButtonWrapper = ({ currency, showSpinner, amount, payload, accessToken }) 
                 icon: "success",
                 title: "Payment is Success"
               });
-            router.push('/information/order');
+              router.push('/information/order');
+              reduxDispatch(clearCart());
         } catch (error) {
             console.log(error)
             const Toast = Swal.mixin({

@@ -3,13 +3,16 @@ import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BsCurrencyDollar } from "react-icons/bs";
 import { LiaChevronCircleRightSolid } from "react-icons/lia";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Swal from "sweetalert2";
 
 import { createOrder, getDetailUser } from "../api/route";
 import Paypal from "@/components/Paypal";
+import { clearCart } from "@/lib/features/cart/cartSlice";
+
 // sb-47xx4930095432@personal.example.com
 const CheckoutPage = () => {
+    const dispatch = useDispatch();
     const router = useRouter();
     // const user = useSelector(state => state.auth.user);
     // const accessToken = useSelector(state => state.auth.accessToken);
@@ -75,6 +78,7 @@ const CheckoutPage = () => {
                 address: selectedAddress
             } 
             await createOrder(payload, accessToken);
+            await dispatch(clearCart());
             const Toast = Swal.mixin({
                 toast: true,
                 position: "top-end",
@@ -113,7 +117,7 @@ const CheckoutPage = () => {
     }
 
     // console.log('selectedAddress',selectedAddress);
-    console.log(user)
+    // console.log(user)
 
     return( 
         <div className="margin-component mt-[31px] flex flex-col gap-5">

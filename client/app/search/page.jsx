@@ -10,6 +10,7 @@ import Pagination from '@/components/Pagination';
 const searchPage = () => {
     const keyword = useSearchParams().get('keyword');
     const [data, setData] = useState([]);
+    const [sortOrder, setSortOrder] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const productsPerPage = 16;                                                      
     const indexOfLastProduct = currentPage * productsPerPage;                       
@@ -25,17 +26,40 @@ const searchPage = () => {
     useEffect(() => {
         fetchSearch(keyword)
     }, [keyword]);
-    // console.log(currentProducts);
+    console.log(currentProducts);
+
+    const handleSortChange = (option) => {
+        if (option !== sortOrder) {
+            setSortOrder(option);
+            const sortedProducts = [...data].sort((a, b) => {
+                if (option === 'priceAsc') {
+                    return a.price - b.price;
+                } else if (option === 'priceDesc') {
+                    return b.price - a.price;
+                } else if (option === 'hot') {
+                    return b.sold - a.sold;
+                } else if (option === 'Latest') {
+                    return new Date(b.createdAt) - new Date(a.createdAt)
+                } else {
+                    return new Date(a.createdAt) - new Date(b.createdAt)
+                }
+            });
+            setData(sortedProducts);
+        }
+    };
 
     return (
         <div className='margin-component flex flex-col gap-5 p-3'>
             <div className='w-full p-1 flex justify-between'>
                 <div className='text-xl bg-slate-200 rounded-lg p-2 font-semibold'>Search Results: <span className='text-btn font-semibold'>{data.length}</span></div>
                 <div>
-                    <select className='h-10 rounded-lg bg-slate-200'>
-                        <option value="">Sort</option>
-                        <option value="asc">Price: Low to High</option>
-                        <option value="desc">Price: High to Low</option>
+                    <select className='h-10 rounded-lg bg-slate-200' value={sortOrder} onChange={(e) => handleSortChange(e.target.value)}>
+                        <option value=''>Sort</option>
+                        <option value='hot'>Sold: A Lot</option>
+                        <option value="priceAsc">Price: Low to High</option>
+                        <option value="priceDesc">Price: High to Low</option>
+                        <option value="Latest">Time: Latest</option>
+                        <option value="Oldest">Time: Oldest</option>
                     </select>
                 </div>
             </div>
