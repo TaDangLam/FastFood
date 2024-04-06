@@ -93,33 +93,51 @@ const ProductDetail = () => {
         });
       }
 
-    console.log(product);
+    // console.log(product);
     return ( 
         <div className="margin-component mt-[31px] flex gap-5">
             <div className="flex flex-col h-full w-9/12 border-r-2 pr-3 border-b-2 pb-3">
                 <div className="flex w-full h-1/2">
-                    <div className="w-5/12 h-full border-2 ">
+                    <div className="flex items-center relative w-5/12 h-full border-2 ">
                         <img 
                             src={`${process.env.NEXT_PUBLIC_API_UPLOAD}/${product.name}/${product.images[0]}`} 
                             alt="photos"
                             className="w-full h-full object-cover"
                         />
+                        {product?.status === 'SoldOut' && (
+                            <div className="absolute top-0 right-0 w-[120px] h-[150px]">
+                                <img src='/corner-sold-out-ribbon-banner-260nw-1325587067-Photoroom.png-Photoroom.png' className="w-full h-full"/>
+                            </div>
+                        )}
                     </div>
                     <div className="flex flex-col gap-5 w-7/12 h-full px-16 py-5">
                         <div className="flex flex-col gap-3.5 w-full h-1/4">
                             <div className="flex items-center gap-2 w-full h-1/3">{renderRatingStar()} ( {`${product.reviewId.length} customer review`} )</div>
                             <div className="w-full h-1/3 text-3xl font-semibold">{product.name}</div>
-                            <div className="w-full h-1/3 text-2xl font-semibold text-[#fab348]">$ {product.price}</div>
+                            <div className="w-full"><span className="font-semibold">Sold</span> : {product.sold}</div>
+                            <div className="w-full h-1/3 text-3xl font-semibold text-[#fab348]">$ {product.price}</div>
                         </div>
-                        <div className="w-full h-1/4 py-2 font-extralight">{firstDesc}</div>
+                        <div className="flex flex-col gap-5 w-full h-1/4 py-2">
+                            <div><span className="font-semibold">ID Product</span>: <span className="text-gray-500">{id}</span></div>
+                            <div className="font-extralight">{firstDesc}</div>
+                        </div>
                         <div className="w-full h-1/4">
-                            <button
-                                className="flex items-center gap-3 bg-[#fab348] hover:bg-[#ffc139] text-white px-6 py-3 rounded-full font-semibold"
-                                onClick={() => handleAddToCart(product)}
-                            >
-                                <span className="text-2xl font-semibold"><CiShoppingCart /></span>
-                                ADD TO CART
-                            </button>
+                            {product?.status === 'SoldOut' ? (
+                                <button
+                                    className="flex items-center gap-3 bg-[#cdcdcd] text-white px-6 py-3 rounded-full font-semibold duration-300"
+                                >
+                                    <span className="text-2xl font-semibold"><CiShoppingCart /></span>
+                                    ADD TO CART
+                                </button>
+                            ) : (
+                                <button
+                                    className="flex items-center gap-3 bg-[#fab348] hover:bg-[#ffc139] text-white px-6 py-3 rounded-full font-semibold duration-300"
+                                    onClick={() => handleAddToCart(product)}
+                                >
+                                    <span className="text-2xl font-semibold"><CiShoppingCart /></span>
+                                    ADD TO CART
+                                </button>
+                            )}
                         </div>
                         <div className="flex flex-col w-full h-1/4 ">
                             <div className="w-full h-4/6 text-lg font-medium pt-5">Safe Checkout</div>

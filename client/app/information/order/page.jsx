@@ -151,7 +151,7 @@ const Order = () => {
                                 title: "Success!",
                                 icon: "success"
                             });
-                            router.push('/information/order?path=Delivered');
+                            window.location.reload();
                         } catch (error) {
                             console.log(error);
                             Swal.fire({
@@ -192,9 +192,10 @@ const Order = () => {
                             {order.orderDetail.map(ord => (
                                 <Link href={`/information/order/orderdetail/${order._id}`} className="flex items-center w-full border-b-2">
                                     <div className="w-1/12"><img src={`${process.env.NEXT_PUBLIC_API_UPLOAD}/${ord.productId.name}/${ord.productId.images[0]}`} alt="product-images" className="object-cover w-full h-full"/></div>
-                                    <div className="w-10/12 flex flex-col gap-1 px-5">
-                                        <div className="w-full h-1/2 text-lg">{ord.productId.name}</div>
-                                        <div className="w-full h-1/2"><span className="font-semibold">Quantity:</span> {ord.quantity}</div>
+                                    <div className="w-10/12 flex flex-col gap-2.5 px-5 py-2">
+                                        <div className="w-full h-1/3 text-xl font-semibold">{ord.productId.name}</div>
+                                        <div className="w-full h-1/3"><span className="font-semibold">Quantity:</span> {ord.quantity}</div>
+                                        <div className="w-full h-1/3 text-sm"><span className="font-semibold">ID: </span><span>{ord.productId._id}</span></div>
                                     </div>
                                     <div className="w-1/12 font-semibold text-right">$ {parseFloat(ord.totalPriceProduct).toFixed(2)}</div>
                                 </Link>

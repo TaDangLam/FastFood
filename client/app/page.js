@@ -158,7 +158,7 @@ export default function Home() {
           {selectedCategoryId && products?.map(product => (
             <div 
               key={product._id} 
-              className="flex flex-col gap-5 w-1/4 p-6 border border-[#d4d4d4] hover:shadow-xl duration-500"
+              className="flex flex-col gap-5 w-1/4 p-6 border border-[#d4d4d4] hover:shadow-xl duration-500 relative"
             >
               <Link className="w-full h-4/6 transition-opacity duration-300 hover:opacity-75" href={`/productdetail/${product._id}`}>
                 <img src={`${process.env.NEXT_PUBLIC_API_UPLOAD}/${product.name}/${product.images[0]}`} 
@@ -168,9 +168,15 @@ export default function Home() {
               <div className="w-full h-1/6 text-lg font-medium">{product.name}</div>
               <div className="flex items-center justify-between w-full h-1/6 text-[#ffc139] text-xl font-semibold">
                 <div className="text-2xl">$ {product.price}</div>
-                <div onClick={() => handleAddToCart(product)} className="flex bg-[#ffc139] p-3 w-1/6 text-white rounded-full hover:text-[#ffc139] hover:bg-white  hover:outline hover:outline-[#ffc139] duration-500 cursor-pointer">
-                  <CiShoppingCart/>
-                </div>
+                {product?.status === 'SoldOut' ? (
+                    <div className="absolute top-0 right-0 w-[120px] h-[150px]">
+                      <img src='/corner-sold-out-ribbon-banner-260nw-1325587067-Photoroom.png-Photoroom.png' className="w-full h-full"/>
+                    </div>
+                ) : (
+                    <div onClick={() => handleAddToCart(product)} className="flex bg-[#ffc139] p-3 w-1/6 text-white rounded-full hover:text-[#ffc139] hover:bg-white  hover:outline hover:outline-[#ffc139] duration-500 cursor-pointer">
+                      <CiShoppingCart/>
+                    </div>
+                )}
               </div>
             </div>
           ))}

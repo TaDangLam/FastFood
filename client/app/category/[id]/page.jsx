@@ -26,7 +26,7 @@ const Category = () => {
         }
     }, [id])
 
-
+    console.log(currentProducts)
     return ( 
         <div className="margin-component mt-[31px] ">
             <div className="w-full h-1/4">
@@ -55,12 +55,21 @@ const Category = () => {
                     </div>
                     <div className='grid grid-cols-3 gap-6 w-full h-4/6 pb-6'>
                         {currentProducts.map(product => (
-                            <Link href={`/productdetail/${product._id}`} className='flex flex-col gap-4 w-full h-full border p-5  hover:shadow-xl duration-300'>
+                            <Link href={`/productdetail/${product._id}`} className='flex flex-col gap-4 w-full h-full border p-5  hover:shadow-xl duration-300 relative'>
                                 <div className='w-full h-3/5'><img src={`${process.env.NEXT_PUBLIC_API_UPLOAD}/${product.name}/${product.images[0]}`} alt="photo product" className='w-full h-full object-contain'/></div>
                                 <div className='flex flex-col w-full h-2/5'>
                                     <div className='w-full h-2/3 text-lg font-medium'>{product.name}</div>
-                                    <div className='w-full h-1/3 text-[#ffc139] text-2xl font-semibold '><span className=''>$ {product.price}</span></div>
+                                    <div className='flex items-center justify-between w-full h-1/3'>
+                                        <div className='text-[#ffc139] text-2xl font-semibold '><span className=''>$ {product.price}</span></div>
+                                        <div className='text'><span className="font-semibold">Sold</span> : {product.sold}</div>
+                                    </div>
+
                                 </div>
+                                {product?.status === 'SoldOut' && (
+                                    <div className="absolute top-0 right-0 w-[120px] h-[150px]">
+                                        <img src='/corner-sold-out-ribbon-banner-260nw-1325587067-Photoroom.png-Photoroom.png' className="w-full h-full"/>
+                                    </div>
+                                )}
                             </Link>
                         ))}
                     </div>

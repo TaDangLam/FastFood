@@ -12,7 +12,7 @@ const Cart = () => {
     const dispatch = useDispatch();
     const carts = useSelector(state => state.cart.cart);
     const accessToken = sessionStorage.getItem('accessToken');
-    // console.log(accessToken);
+    // console.log(carts);
 
     const handleRemoveProductFromCart = async(cart) => {
         dispatch(removeProduct(cart));

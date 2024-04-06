@@ -25,7 +25,7 @@ const searchPage = () => {
     useEffect(() => {
         fetchSearch(keyword)
     }, [keyword]);
-    // console.log(data);
+    // console.log(currentProducts);
 
     return (
         <div className='margin-component flex flex-col gap-5 p-3'>
@@ -41,14 +41,20 @@ const searchPage = () => {
             </div>
             <div className='grid grid-cols-4 gap-3'>
                 {currentProducts.map(product => (
-                    <Link href={`/productdetail/${product._id}`} className='h-full w-full border-2 hover:shadow-xl duration-300 hover:opacity-80'>
-                        <div className='bg-white rounded-pd w-full h-full p-1'>
+                    <Link href={`/productdetail/${product._id}`} className='relative h-full w-full border-2 hover:shadow-xl duration-300 hover:opacity-80'>
+                        <div className='bg-white rounded-pd w-full h-full p-5'>
                                 <div className='w-full h-4/6'><img src={`${process.env.NEXT_PUBLIC_API_UPLOAD}/${product.name}/${product.images[0]}`}  alt="product-image" className='h-full w-full object-contain rounded-pd '/></div>
-                                <div className='h-1/6 w-full text-center text-lg font-medium'>{product.name}</div>
-                                <div className=' h-1/6 w-full mb-0 flex items-center justify-center'>
-                                    <span className='flex font-medium text-md text-[#ffa460]'>{product.price} <BsCurrencyDollar /></span>
+                                <div className='h-1/6 w-full text-lg font-semibold '>{product.name}</div>
+                                <div className=' h-1/6 w-full mb-0 flex items-center justify-between'>
+                                    <div className='flex font-semibold text-2xl text-[#ffa460] '>{product.price} <BsCurrencyDollar /></div>
+                                    <div className=''><span className="font-semibold">Sold</span> : {product.sold}</div>
                                 </div>
                         </div>
+                        {product?.status === 'SoldOut' && (
+                            <div className="absolute top-0 right-0 w-[120px] h-[150px]">
+                                <img src='/corner-sold-out-ribbon-banner-260nw-1325587067-Photoroom.png-Photoroom.png' className="w-full h-full"/>
+                            </div>
+                        )}
                     </Link>
                 ))}
             </div>

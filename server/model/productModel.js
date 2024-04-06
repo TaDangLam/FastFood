@@ -12,6 +12,7 @@ const ProductSchema = new mongoose.Schema ({
     price: {type: Number, required: true},
     // title: {type: String},
     desc: {type: String},
+    sold: {type: Number, default: 0},
     status: {type: String, enum: statusProduct, default: 'Stock'}
 }, {
     timestamps: true

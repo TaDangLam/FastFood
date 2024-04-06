@@ -102,6 +102,7 @@ const OrderDetail = () => {
                         <div className="flex flex-col  gap-5 w-8/12 p-2">
                             <div className="font-semibold">{item.productId?.name}</div>
                             <div><span className="font-semibold">Amount: </span><span>{item.quantity}</span></div>
+                            <div className="text-sm"><span className="font-semibold">ID</span>: <span>{item.productId?._id}</span></div>
                         </div>
 
                         <div className="flex w-2/12 p-2">

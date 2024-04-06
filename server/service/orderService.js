@@ -1,5 +1,6 @@
 import { io } from '../index.js';
 import { Order } from '../model/orderModel.js';
+import { Product } from '../model/productModel.js';
 import { User } from '../model/userModel.js';
 
 const orderService = {
@@ -180,6 +181,12 @@ const orderService = {
             const oldOrder = await Order.findById(oid);
             if(!oldOrder) {
                 throw new Error('Order is not found');
+            }
+            for(const item of oldOrder.orderDetail){
+                const { productId, quantity } = item;
+                const product = await Product.findById(productId);
+                product.sold = (product.sold || 0) + quantity;
+                await product.save();
             }
             oldOrder.status = newData;
             const newOrder = await oldOrder.save();
