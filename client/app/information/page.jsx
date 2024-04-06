@@ -19,7 +19,12 @@ const Information = () => {
     const [phone, setPhone] = useState(user?.phone);
     
     
-    // console.log(user);
+    // useEffect(() => {
+    //   if (fullName !== user?.fullName || email !== user?.email || phone !== user?.phone) {
+    //     const updatedUser = { ...user, fullName, email, phone };
+    //     sessionStorage.setItem('user', JSON.stringify(updatedUser));
+    //   }
+    // }, [fullName, email, phone, user]);
 
     const UpdateInfo = async(e) => {
       e.preventDefault();
@@ -27,6 +32,8 @@ const Information = () => {
             const userID = user._id;
             const newUser = { email, password, repeatPassword, phone, accessToken, userID, fullName };
             await updateUser(newUser, dispatch);
+            const updatedUser = { ...user, email, fullName, phone };
+            sessionStorage.setItem('user', JSON.stringify(updatedUser));
             const Toast = Swal.mixin({
               toast: true,
               position: "center",

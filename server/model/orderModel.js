@@ -21,7 +21,8 @@ const OrderSchema = new mongoose.Schema ({
         city: {type: String, required: true},
         province: {type: String, required: true}
     },
-    isPaid: {type: Boolean}
+    isPaid: {type: Boolean},
+    isReview: { type: Boolean, default: false }
 }, {
     timestamps: true
 })

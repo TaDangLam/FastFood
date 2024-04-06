@@ -27,6 +27,10 @@ const reviewService = {
             // console.log(order);
             const newReview = await Review.create({ userID, productID, orderID, text, rating });
 
+            //update isReview in model Order
+            order.isReview = true;
+            await order.save();
+
             // Add _id in field review in Model Product
             await Product.findByIdAndUpdate(productID, { $push: { reviewId: newReview._id }});
             return ({

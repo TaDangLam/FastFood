@@ -144,7 +144,7 @@ const ProductDetail = () => {
                                             <FaUserCircle className="h-full w"/>
                                         </div>
                                         <div className="flex flex-col gap-3.5 h-full w-11/12">
-                                            <div className="w-full text-base font-medium">{review.userID.name}</div>
+                                            <div className="w-full text-base font-bold">{review.userID?.name}</div>
                                             <div className="flex flex-col gap-2.5 w-full">
                                                 <div className="flex gap-1 w-full">{renderStarReview(review.rating)}</div>
                                                 <div className="w-full">{formatDateTime(review.createdAt)}</div>
