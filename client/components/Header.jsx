@@ -2,19 +2,25 @@
 import { useEffect, useState } from "react";
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useDispatch, useSelector } from "react-redux";
-import { FaSearch, FaUserAlt, FaShoppingCart, FaFacebookSquare, FaTiktok  } from "react-icons/fa";
+import { useDispatch } from "react-redux";
+import { FaSearch, FaUserAlt, FaShoppingCart, FaFacebookSquare, FaTiktok, FaUser  } from "react-icons/fa";
 import { IoLogoInstagram } from "react-icons/io5";
-import { FaUser } from "react-icons/fa";
-import { IoIosNotifications } from "react-icons/io";
+import { IoIosLogOut, IoIosNotifications } from "react-icons/io";
 import { io } from 'socket.io-client';
 import Tippy from '@tippyjs/react/headless';
+import { MdOutlineAccountCircle } from "react-icons/md";
+import { CiGift } from "react-icons/ci";
+import { FaRegAddressBook, FaAngleDown } from "react-icons/fa6";
+import { GrUserManager } from "react-icons/gr";
 
 import Popper from "./Popper";
+import { logout } from "@/app/api/route";
+import DropdownHome from "./DropdownHome";
 
 const Header = () => { 
     // const user = useSelector(state => state.auth.user);
     const user = JSON.parse(sessionStorage.getItem('user'));
+    const [isHovered, setIsHovered] = useState(false);
     const [searchText, setSearchText] = useState('');
     const [notification, setNotification] = useState(user?.notification);
     const [visibleNotifications, setVisibleNotifications] = useState([]);
@@ -26,6 +32,11 @@ const Header = () => {
         router.push(`/search?keyword=${searchText}`);
     }
     
+    const handleLogout = async() => {
+        await logout(dispatch);
+        router.push('/auth')
+    }
+
     // useEffect(() => {
     //     const socket = io(`${process.env.NEXT_PUBLIC_BACKEND}`);
     //     if (user && user.role === 'staff') {
@@ -99,10 +110,29 @@ const Header = () => {
                 </div>
                 {user && user.role === 'staff' ? (
                     <div className="w-3/12 flex items-center gap-5 px-5">
-                        <Link href={'/information/staff/managerStatusProduct'} className="flex items-center gap-2 cursor-pointer text-[#ff9b49] duration-300 font-semibold justify-center w-1/2">
-                                <FaUser />
-                                {user.name} (Staff)
-                        </Link>
+                        <Tippy
+                            interactive
+                            arrow
+                            // visible
+                            delay={200}
+                            placement='bottom'
+                            render={attrs => (
+                                <div className="box" tabIndex="-1" {...attrs}>
+                                    <Popper>
+                                        <div className='bg-slate-100 w-80 h-full  border-2 rounded-lg flex flex-col gap-2.5'>
+                                            <Link href={'/information/staff/managerStatusProduct'} className='flex items-center gap-2 py-1 pl-3 text-lg font-semibold hover:bg-gradient-to-r from-signup-left to-signup-right hover:text-white duration-100 hover:rounded-t-lg '><GrUserManager />Product Status Management </Link>
+                                            <Link href={`/information/staff/managerOrder?status=Pending`} className='flex items-center gap-2 py-1 pl-3 text-lg font-semibold hover:bg-gradient-to-r from-signup-left to-signup-right hover:text-white duration-100 '><CiGift /> Order Management</Link>
+                                            <div onClick={handleLogout} className='flex items-center gap-2 py-1 pl-3 text-lg font-semibold hover:bg-gradient-to-r from-signup-left to-signup-right hover:text-white duration-100 hover:rounded-b-lg cursor-pointer '><IoIosLogOut />Logout</div>
+                                        </div>
+                                    </Popper>
+                                </div>
+                            )}
+                        >
+                            <Link href={'/information/staff/managerStatusProduct'} className="flex items-center gap-2 cursor-pointer text-[#ff9b49] duration-300 font-semibold justify-center w-1/2">
+                                    <FaUser />
+                                    {user.name} (Staff)
+                            </Link>
+                        </Tippy> 
                         <Tippy
                             interactive
                             arrow
@@ -158,20 +188,17 @@ const Header = () => {
                             <Tippy
                                 interactive
                                 arrow
-                                visible
-                                trigger="mouseenter focus"
+                                // visible
                                 delay={200}
                                 placement='bottom'
                                 render={attrs => (
                                     <div className="box" tabIndex="-1" {...attrs}>
                                         <Popper>
-                                            <div className="border-2 rounded-xl bg-slate-100 w-[200px] h-full">
-                                                <div className="">
-                                                    b
-                                                </div>
-                                                <div>
-                                                    a
-                                                </div>
+                                            <div className='bg-slate-100 w-56 h-full  border-2 rounded-lg flex flex-col gap-2.5'>
+                                                <Link href={'/information'} className='flex items-center gap-2 py-1 pl-3 text-lg font-semibold hover:bg-gradient-to-r from-signup-left to-signup-right hover:text-white duration-100 hover:rounded-t-lg '><MdOutlineAccountCircle/>Account </Link>
+                                                <Link href={'/information/address'} className='flex items-center gap-2 py-1 pl-3 text-lg font-semibold hover:bg-gradient-to-r from-signup-left to-signup-right hover:text-white duration-100 '><FaRegAddressBook /> Address</Link>
+                                                <Link href={`/information/order`} className='flex items-center gap-2 py-1 pl-3 text-lg font-semibold hover:bg-gradient-to-r from-signup-left to-signup-right hover:text-white duration-100 '><CiGift /> Order</Link>
+                                                <div onClick={handleLogout} className='flex items-center gap-2 py-1 pl-3 text-lg font-semibold hover:bg-gradient-to-r from-signup-left to-signup-right hover:text-white duration-100 hover:rounded-b-lg cursor-pointer '><IoIosLogOut />Logout</div>
                                             </div>
                                         </Popper>
                                     </div>
@@ -197,11 +224,30 @@ const Header = () => {
                 <div className="flex items-center w-full h-full">
                     <div className=" w-4/6 ">
                         <ul className="flex gap-4 justify-end">
-                            <li className="p-2 hover:text-[#ffc139] font-semibold"><Link href={'/'}>HOME</Link></li>
-                            <li className="p-2 hover:text-[#ffc139] font-semibold"><Link href={'/about'}>ABOUT</Link></li>
-                            <li className="p-2 hover:text-[#ffc139] font-semibold"><Link href={'/food'}>FOOD</Link></li>
-                            <li className="p-2 hover:text-[#ffc139] font-semibold"><Link href={'/delivery'}>DELIVERY</Link></li>
-                            <li className="p-2 hover:text-[#ffc139] font-semibold"><Link href={'/contact'}>CONTACT</Link></li>
+                            <li className="p-2 font-semibold ">
+                                <Tippy
+                                    interactive
+                                    arrow
+                                    // visible
+                                    delay={200}
+                                    placement='bottom'
+                                    onHide={() => setIsHovered(false)}
+                                    render={attrs => (
+                                        <div className="box" tabIndex="-1" {...attrs} 
+                                            onMouseEnter={() => setIsHovered(true)}
+                                            onMouseLeave={() => setIsHovered(false)}
+                                        >   
+                                           <DropdownHome />
+                                        </div>
+                                    )}
+                                >
+                                    <Link href={'/'} className={`flex items-center gap-2 duration-200 ${isHovered ? 'text-[#ffc139]' : 'hover:text-[#ffc139]'}`}>HOME <FaAngleDown/></Link>
+                                </Tippy>  
+                            </li>
+                            <li className="p-2 hover:text-[#ffc139] font-semibold duration-200"><Link href={'/about'}>ABOUT</Link></li>
+                            <li className="p-2 hover:text-[#ffc139] font-semibold duration-200"><Link href={'/food'}>FOOD</Link></li>
+                            <li className="p-2 hover:text-[#ffc139] font-semibold duration-200"><Link href={'/delivery'}>DELIVERY</Link></li>
+                            <li className="p-2 hover:text-[#ffc139] font-semibold duration-200"><Link href={'/contact'}>CONTACT</Link></li>
                         </ul>
                     </div>
                     <div className="flex gap-3 justify-center w-2/6">
