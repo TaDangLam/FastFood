@@ -6,6 +6,7 @@ import authMiddleWare from '../middleware/authMiddleware.js'
 
 Router.get('/getAll', authMiddleWare.verifyTokenAdmin, userController.getAllUser);
 Router.get('/get-all-staff', authMiddleWare.verifyTokenAdmin, userController.getAllStaff);
+Router.get('/get-all-notification', authMiddleWare.verifyTokenStaff, userController.getAllNotification)
 Router.post('/register', userController.register);
 Router.post('/login', userController.loginUser);
 Router.post('/refresh-token', authMiddleWare.verifyCustomer, userController.refreshToken);

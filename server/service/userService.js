@@ -30,6 +30,23 @@ const userService = {
             throw new Error(error.message);
         }
     },
+    getAllNotification: async(userId) => {
+        try {
+            const user = await User.findById(userId);
+            if (!user) {
+                throw new Error('User not found');
+            }
+    
+            const notifications = user.notification;
+            return {
+                status: 'OK',
+                message: 'SUCCESS',
+                data: notifications
+            };
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    },
     getDetailUser: async(id) => {
         try {
             const checkUser = await User.findById(id).populate('address');

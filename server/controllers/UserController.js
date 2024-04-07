@@ -21,6 +21,15 @@ const userController = {
             res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: error.message });
         }
     },
+    getAllNotification: async(req, res) => {
+        try {
+            const userId = req.user.payload.id;
+            const response = await userService.getAllNotification(userId);
+            res.status(StatusCodes.OK).json(response);
+        } catch (error) {
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: error.message });
+        }
+    },
     getDetailUser: async(req, res) => {
         const id = req.params.id;
         try {

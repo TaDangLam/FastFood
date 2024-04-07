@@ -34,12 +34,6 @@ const NavbarStaff = () => {
                     >
                         Order Management
                     </Link>
-                    <Link
-                        href={"/information/staff/notification"}
-                        className={pathname === '/information/staff/notification' ? active : inactiveLink}
-                    >
-                        Notification
-                    </Link>
                     <button onClick={handleLogout} className={inactiveLink}>
                         Log out
                     </button>

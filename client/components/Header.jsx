@@ -53,6 +53,7 @@ const Header = () => {
     //         sessionStorage.setItem('user', JSON.stringify(updatedUser));
     //     }
     // }, [notification]);
+    
     useEffect(() => {
         const socket = io(`${process.env.NEXT_PUBLIC_BACKEND}`);
         if (user && user.role === 'staff') {
@@ -143,28 +144,24 @@ const Header = () => {
                             render={attrs => (
                                 <div className="box" tabIndex="-1" {...attrs}>
                                     <Popper>
-                                        <div className="border-2 rounded-xl bg-slate-100">
+                                        <div className="border-2 rounded-xl bg-white">
                                             {visibleNotifications  && visibleNotifications.length > 0 ? (
                                                 <div className="p-3">
                                                     {visibleNotifications.map(note => (
-                                                        <div className='w-[500px] h-full p-6 border-b-2 hover:bg-slate-300 cursor-pointer'>
+                                                        <div className='w-[500px] h-full p-6 border-b-2 hover:bg-slate-100 font-medium cursor-pointer'>
                                                             {note.message}
                                                         </div>
                                                     ))}
-                                                    <Link href={'/information/staff/notification'} className="flex items-center justify-center p-6 text-[#4b6cb7] font-bold hover:bg-slate-300">
-                                                        All Notification
-                                                    </Link> 
+
                                                 </div>
                                             ) : (
                                                 <div className="p-3">
-                                                    {notification.slice(0, 5).map(note => (
-                                                        <div className='w-[500px] h-full p-6 border-b-2 hover:bg-slate-300 cursor-pointer '>
+                                                    {notification.slice(0, 6).map(note => (
+                                                        <div className='w-[500px] h-full p-6 border-b-2 hover:bg-slate-100 font-medium cursor-pointer'>
                                                             {note.message}
                                                         </div>
                                                     ))}
-                                                    <Link href={'/information/staff/notification'} className="flex items-center justify-center p-6 text-[#4b6cb7] font-bold hover:bg-slate-300">
-                                                        All Notification
-                                                    </Link> 
+
                                                 </div>
                                             )}
                                         </div>
@@ -172,9 +169,9 @@ const Header = () => {
                                 </div>
                             )}
                         >
-                            <Link href={'/information'} className="flex items-center gap-2 cursor-pointer duration-300 font-semibold w-1/2 justify-center text-xl">
+                            <div  className="flex items-center gap-2 cursor-pointer duration-300 font-semibold w-1/2 justify-center text-xl">
                                 <IoIosNotifications  /> ({visibleNotifications?.length}) 
-                            </Link>
+                            </div>
                         </Tippy>    
                     </div>
                 ) : (

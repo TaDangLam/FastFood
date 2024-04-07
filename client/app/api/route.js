@@ -336,6 +336,20 @@ export const deleteUser = async(id, accessToken) => {
     }
 }
 
+export const getAllNotifications = async(accessToken) => {
+    try {
+        const response = await axios.get(`${baseUrl}/user/get-all-notification`, {
+            headers: {
+                'token': `Bearer ${accessToken}`
+            }
+        });
+        return response.data.data;
+    } catch (error) {
+        console.log('Get All Notification error: ', error);
+        throw error;
+    }
+}
+
 export const logout = (dispatch) => {
     dispatch(Logout());
 }
