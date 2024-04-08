@@ -1,3 +1,5 @@
+import mongoose from 'mongoose';
+
 import { io } from '../index.js';
 import { Order } from '../model/orderModel.js';
 import { Product } from '../model/productModel.js';
@@ -43,6 +45,27 @@ const orderService = {
             status: 'OK',
             data: order
            }) 
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    },
+    searchOrder: async(keyword) => {
+        try {
+            let orders;
+            
+            const isValidObjectId = mongoose.Types.ObjectId.isValid(keyword);
+            
+            if (isValidObjectId) {
+                orders = await Order.find({ _id: keyword }).populate({path: 'orderBy', select: '_id name email phone'})
+                                                            .populate('orderDetail.productId');
+            } else {
+                throw new Error('Search No Data Order');
+            }
+            
+            return {
+                status: 'OK',
+                data: orders
+            };
         } catch (error) {
             throw new Error(error.message);
         }

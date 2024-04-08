@@ -29,26 +29,26 @@ const Cart = () => {
     }
 
     const handleCheckout = () => {
-        const soldOutProduct = carts.find(cart => cart.item.status === 'SoldOut');
-        // if(accessToken !== null) {
-        //     router.push('/checkout')
-        // }else{
-        //     router.push('/auth');
-        // }
-        if (soldOutProduct) {
-            Swal.fire({
-                icon: 'error',
-                text: `Product "${soldOutProduct.item.name}" is sold out. Please remove the product from the cart.`,
-                confirmButtonText: 'Yes'
-            });
-        } 
-        else {
-            if (accessToken !== null) {
-                router.push('/checkout')
-            } else {
-                router.push('/auth');
-            }
+        // const soldOutProduct = carts.find(cart => cart.item.status === 'SoldOut');
+        if(accessToken !== null) {
+            router.push('/checkout')
+        }else{
+            router.push('/auth');
         }
+        // if (soldOutProduct) {
+        //     Swal.fire({
+        //         icon: 'error',
+        //         text: `Product "${soldOutProduct.item.name}" is sold out. Please remove the product from the cart.`,
+        //         confirmButtonText: 'Yes'
+        //     });
+        // } 
+        // else {
+        //     if (accessToken !== null) {
+        //         router.push('/checkout')
+        //     } else {
+        //         router.push('/auth');
+        //     }
+        // }
     }
     
     const sum =  carts.reduce((total, cart) => total + cart.total, 0);

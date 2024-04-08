@@ -435,6 +435,16 @@ export const getOrderDetail = async(id, accessToken) => {
     }
 }
 
+export const searchOrder = async(keyword, accessToken) => {
+    try {
+        const response = await axios.get(`${baseUrl}/order/search?keyword=${keyword}`, {headers: {'token': `Bearer ${accessToken}` }});
+        return(response.data.data);
+    } catch (error) {
+        console.log('Search Order error: ', error);
+        throw error;
+    }
+}
+
 export const createOrder = async(data, accessToken) => {
     try {
         const { orderBy, paymentType, totalPrice, orderDetail, address, isPaid } = data
@@ -564,6 +574,16 @@ export const updateStatusOrderToCancel = async(id, accessToken) => {
         return(response.data.data);
     } catch (error) {
         console.log('Update Status Order Cancel Staff error: ', error);
+        throw error;
+    }
+}
+
+export const deleteOrder = async(id, accessToken) => {
+    try {
+        const response = await axios.delete(`${baseUrl}/order/delete-order/${id}`, {headers: {'token': `Bearer ${accessToken}` }});
+        return(response.data.message);
+    } catch (error) {
+        console.log('Delete Order error: ', error);
         throw error;
     }
 }

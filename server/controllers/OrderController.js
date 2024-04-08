@@ -28,6 +28,15 @@ const OrderController = {
             res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: error.message });
         }
     },
+    searchOrder: async(req, res) => {
+        try {
+            const { keyword } = req.query;
+            const response = await orderService.searchOrder(keyword);
+            res.status(StatusCodes.OK).json(response);
+        } catch (error) {
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: error.message });
+        }
+    },
     getAllProcessingOrderForUser: async(req, res) => {
         try {
             const userId = req.user.payload.id;
