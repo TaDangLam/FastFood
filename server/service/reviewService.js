@@ -52,6 +52,196 @@ const reviewService = {
             throw new Error(error.message);
         }
     },
+    getAllReview: async() => {
+        try {
+            const response = await Review.find();
+            return ({
+                status: 'OK',
+                data: response
+            });
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    },
+    calculateItemSimilarity: async () => {
+        const itemUserMatrix = await reviewService.buildItemUserMatrix(); // Xây dựng ma trận đánh giá sản phẩm
+
+        const similarityMatrix = {}; // Ma trận tương tự sản phẩm
+
+        // Tính toán Cosine Similarity giữa các cặp sản phẩm
+        const productIds = Object.keys(itemUserMatrix);
+
+        for (let i = 0; i < productIds.length; i++) {
+            const productId1 = productIds[i];
+            similarityMatrix[productId1] = {};
+
+            for (let j = 0; j < productIds.length; j++) {
+                const productId2 = productIds[j];
+
+                if (i === j) {
+                    similarityMatrix[productId1][productId2] = 1; // Tương tự của một sản phẩm với chính nó là 1
+                } else {
+                    similarityMatrix[productId1][productId2] = reviewService.calculateCosineSimilarity(itemUserMatrix[productId1], itemUserMatrix[productId2]);
+                }
+            }
+        }
+
+        return similarityMatrix;
+    },
+
+    // Hàm tính toán Cosine Similarity giữa hai vector đánh giá
+    calculateCosineSimilarity: (vector1, vector2) => {
+        let dotProduct = 0;
+        let magnitude1 = 0;
+        let magnitude2 = 0;
+
+        for (const userId in vector1) {
+            if (vector2[userId]) {
+                dotProduct += vector1[userId] * vector2[userId];
+            }
+            magnitude1 += vector1[userId] ** 2;
+        }
+
+        for (const userId in vector2) {
+            magnitude2 += vector2[userId] ** 2;
+        }
+
+        if (magnitude1 === 0 || magnitude2 === 0) {
+            return 0;
+        }
+
+        const similarity = dotProduct / (Math.sqrt(magnitude1) * Math.sqrt(magnitude2));
+        return similarity;
+    },
+
+    // Hàm để xây dựng ma trận đánh giá sản phẩm (Item-User Matrix)
+    buildItemUserMatrix: async () => {
+        const itemUserMatrix = {};
+
+        try {
+            const allReviews = await Review.find();
+            allReviews.forEach(review => {
+                const { userID, productID, rating } = review;
+                if (!itemUserMatrix[productID]) {
+                    itemUserMatrix[productID] = {};
+                }
+                itemUserMatrix[productID][userID] = rating;
+            });
+            return itemUserMatrix;
+        } catch (error) {
+            throw new Error('Error building item-user matrix: ' + error.message);
+        }
+    },
+
+    // Hàm để đề xuất sản phẩm dựa trên collaborative filtering (Item-Based CF)
+
+    // recommendProducts: async (userId, limit) => {
+    //     try {
+    //         let recommendations = [];
+    
+    //         if (!userId) {
+    //             // Nếu người dùng chưa đăng nhập, hoặc là người dùng mới không có dữ liệu đánh giá
+    //             // Đề xuất các sản phẩm phổ biến
+    //             recommendations = await reviewService.getPopularProducts(limit);
+    //         } else {
+    //             // Người dùng đã đăng nhập
+    //             const userReviews = await Review.find({ userID: userId });
+    //             const reviewedProductIds = userReviews.map(review => review.productID);
+    
+    //             if (reviewedProductIds.length === 0) {
+    //                 // Nếu người dùng đã đăng nhập nhưng chưa có dữ liệu đánh giá
+    //                 // Đề xuất các sản phẩm phổ biến
+    //                 recommendations = await reviewService.getPopularProducts(limit);
+    //             } else {
+    //                 // Người dùng đã có dữ liệu đánh giá
+    //                 const similarityMatrix = await reviewService.calculateItemSimilarity();
+    //                 recommendations = reviewService.getRecommendations(reviewedProductIds, similarityMatrix, limit);
+    //             }
+    //         }
+    
+    //         return recommendations;
+    //     } catch (error) {
+    //         throw new Error('Error recommending products: ' + error.message);
+    //     }
+    // },
+    // Hàm để đề xuất sản phẩm dựa trên collaborative filtering (Item-Based CF)
+    recommendProducts: async (userId, limit) => {
+        try {
+            let recommendations = [];
+    
+            if (!userId) {
+                // Nếu người dùng chưa đăng nhập, hoặc là người dùng mới không có dữ liệu đánh giá
+                // Đề xuất các sản phẩm phổ biến
+                recommendations = await reviewService.getPopularProducts(limit);
+            } else {
+                // Người dùng đã đăng nhập
+                const userReviews = await Review.find({ userID: userId });
+                const reviewedProductIds = userReviews.map(review => review.productID);
+    
+                if (reviewedProductIds.length === 0) {
+                    // Nếu người dùng đã đăng nhập nhưng chưa có dữ liệu đánh giá
+                    // Đề xuất các sản phẩm phổ biến
+                    recommendations = await reviewService.getPopularProducts(limit);
+                } else {
+                    // Người dùng đã có dữ liệu đánh giá
+                    const similarityMatrix = await reviewService.calculateItemSimilarity();
+                    recommendations = reviewService.getRecommendations(reviewedProductIds, similarityMatrix, limit);
+                }
+            }
+    
+            // Lấy các ObjectId của sản phẩm từ recommendations
+            const productIds = recommendations.map(recommendation => recommendation.productId);
+    
+            // Populate các sản phẩm từ ObjectId trong productIds
+            const populatedProducts = await Product.find({ _id: { $in: productIds } });
+    
+            // Tạo một đối tượng Map để ánh xạ _id của sản phẩm thành đối tượng sản phẩm
+            const productMap = new Map(populatedProducts.map(product => [product._id.toString(), product]));
+    
+            // Thay thế các productId trong recommendations bằng các đối tượng sản phẩm đã populate
+            const populatedRecommendations = recommendations.map(recommendation => {
+                return {
+                    product: productMap.get(recommendation.productId.toString()),
+                    score: recommendation.score
+                };
+            });
+    
+            return populatedRecommendations;
+        } catch (error) {
+            throw new Error('Error recommending products: ' + error.message);
+        }
+    },
+    getPopularProducts: async (limit) => {
+        try {
+            // Lấy danh sách các sản phẩm phổ biến hoặc ngẫu nhiên
+            const popularProducts = await Product.find().limit(limit).sort({ views: -1 }); // Sắp xếp theo số lượng lượt xem hoặc đánh giá
+            return popularProducts.map(product => ({ productId: product._id, score: product.popularityScore }));
+        } catch (error) {
+            throw new Error('Error getting popular products: ' + error.message);
+        }
+    },
+    // Hàm để đề xuất sản phẩm dựa trên ma trận tương tự và danh sách sản phẩm đã đánh giá
+    getRecommendations: (reviewedProductIds, similarityMatrix, limit) => {
+        const recommendations = {};
+
+        reviewedProductIds.forEach(productId1 => {
+            for (const productId2 in similarityMatrix[productId1]) {
+                if (productId1 !== productId2) {
+                    if (!recommendations[productId2]) {
+                        recommendations[productId2] = 0;
+                    }
+                    recommendations[productId2] += similarityMatrix[productId1][productId2];
+                }
+            }
+        });
+
+        const sortedRecommendations = Object.entries(recommendations)
+            .sort(([, score1], [, score2]) => score2 - score1)
+            .map(([productId, score]) => ({ productId, score }));
+
+        // return sortedRecommendations;
+        return sortedRecommendations.slice(0, limit);
+    },
     createReponseText: async(id, userIDResponse, textResponse) => {
         try {
             const originalReview = await Review.findById(id);
