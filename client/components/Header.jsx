@@ -78,8 +78,8 @@ const Header = () => {
         sessionStorage.setItem('user', JSON.stringify(updatedUser));
     }
     }, [notification]);
-    console.log('notification: ', notification);
-    console.log('Visable: ', visibleNotifications);
+    // console.log('notification: ', notification);
+    // console.log('Visable: ', visibleNotifications);
 
     return(
         <div className='margin-component h-full'>

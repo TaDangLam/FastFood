@@ -137,7 +137,7 @@ const Dashboard = () => {
                         <div className="w-full h-2/4 flex items-center justify-center text-sm">Available Product</div>
                     </div>
                 </Link>
-                <Link href={'/dashboard/order'} className="flex items-center p-2  gap-2 bg-gradient-to-r from-[#005AA7] to-[#36D1DC] text-white border h-full w-1/4 rounded-xl hover:bg-[#4b6cb7] hover:shadow-xl hover:opacity-70 duration-500">
+                <Link href={'/dashboard/order?status=Delivered'} className="flex items-center p-2  gap-2 bg-gradient-to-r from-[#005AA7] to-[#36D1DC] text-white border h-full w-1/4 rounded-xl hover:bg-[#4b6cb7] hover:shadow-xl hover:opacity-70 duration-500">
                     <div className="flex items-center justify-center w-1/3 h-full font-semibold text-5xl"><MdPayments/></div>
                     <div className="flex flex-col w-2/3 py-2 h-full">
                         <div className="w-full h-2/4 flex items-center justify-center text-5xl font-semibold">{order.length}</div>

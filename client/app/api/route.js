@@ -190,6 +190,20 @@ export const getReviewById = async(id) => {
     }
 }
 
+export const getRecommandProduct = async(accessToken) => {
+    try {
+        const response = await axios.get(`${baseUrl}/review/recommendations`, {
+            headers: {
+                token: `Bearer ${accessToken}`
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.log('Get Product Recommand error: ', error);
+        throw error;
+    }
+}
+
 export const createOriginalReview = async(data, accessToken) => {
     try {
         const { userID, productID, orderID, text, rating } = data
