@@ -84,7 +84,7 @@ export default function Home() {
           <img src="Untitled-1.webp"/>
         </div>
         <div className="flex flex-col gap-9 w-1/2">
-          <div className="text-5xl font-medium">BEST SALE ALWAYS</div>
+          <div className="text-5xl font-semibold">BEST SALE ALWAYS</div>
           <div className="flex items-center gap-3">
             <div className="text-[#ffc139]"><IoStar /></div>
             <div className="text-[#ffc139]"><IoStar /></div>
@@ -102,14 +102,21 @@ export default function Home() {
 
       <div className="flex gap-10 h-1/4 w-full pt-10">
         <div className="flex flex-col gap-8 p-5 h-full w-1/3">
-          <div className="text-5xl font-medium w-full">
+          <div className="text-5xl font-semibold w-full">
             BEEF CLASSIC <span className="text-[#ffc139]">BURGERS</span> 
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="text-[#ffc139]"><IoStar /></div>
+            <div className="text-[#ffc139]"><IoStar /></div>
+            <div className="text-[#ffc139]"><IoStar /></div>
+            <div className="text-[#ffc139]"><IoStar /></div>
+            <div className="text-[#ffc139]"><IoStar /></div>
           </div>
           <div className="w-full">
             Try this delicious burger containing of two fried parts of a whole-grain bun, a juicy piece of beef, cheese and lettuce
           </div>
           <div className="w-full">
-            <Link href={`/category/65f04a1c81da17e4da645807`} className="flex bg-[#ffc139] p-5 w-1/6 text-white rounded-full hover:text-[#ffc139] hover:bg-white hover:outline hover:outline-[#ffc139] duration-500"><FaPlus className="text-xl"/></Link>
+            <Link href={`/category/65f04a1c81da17e4da645807`} className="flex items-center justify-center bg-[#ffc139] p-5 w-16 text-white rounded-full hover:text-[#ffc139] hover:bg-white hover:outline hover:outline-[#ffc139] duration-500"><FaPlus className="text-xl"/></Link>
           </div>
           <div className="w-full">
             <img src="/Untitled-2.webp"/>
@@ -120,26 +127,40 @@ export default function Home() {
             <div className="w-full">
               <img src="/Untitled-3.webp"/>
             </div>
-            <div className="text-5xl font-medium w-full">
+            <div className="text-5xl font-semibold w-full">
               THE BEST <span className="text-[#ffc139]">PASTA</span> 
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="text-[#ffc139]"><IoStar /></div>
+              <div className="text-[#ffc139]"><IoStar /></div>
+              <div className="text-[#ffc139]"><IoStar /></div>
+              <div className="text-[#ffc139]"><IoStar /></div>
+              <div className="text-[#ffc139]"><IoStar /></div>
             </div>
             <div className="w-full">
               Our pasta with seafood is mixed perfectly with a glass of white wine
             </div>
             <div className="w-full">
-              <Link href={'/category/65f04de981da17e4da645813'} className="flex bg-[#ffc139] p-5 w-1/6 text-white rounded-full hover:text-[#ffc139] hover:bg-white  hover:outline hover:outline-[#ffc139] duration-500"><FaPlus className="text-xl"/></Link>
+              <Link href={'/category/65f04de981da17e4da645813'} className="flex items-center justify-center bg-[#ffc139] p-5 w-16 text-white rounded-full hover:text-[#ffc139] hover:bg-white  hover:outline hover:outline-[#ffc139] duration-500"><FaPlus className="text-xl"/></Link>
             </div>
         </div>
 
         <div className="flex flex-col gap-8 p-5 h-full w-1/3 ">
-          <div className="text-5xl font-medium w-full">
+          <div className="text-5xl font-semibold w-full">
             SEASON <span className="text-[#ffc139]">SOUP</span> 
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="text-[#ffc139]"><IoStar /></div>
+            <div className="text-[#ffc139]"><IoStar /></div>
+            <div className="text-[#ffc139]"><IoStar /></div>
+            <div className="text-[#ffc139]"><IoStar /></div>
+            <div className="text-[#ffc139]"><IoStar /></div>
           </div>
           <div className="w-full">
             We offer you a special dish - our season soup containing season vegetables
           </div>
           <div className="w-full">
-            <Link href={'/category/65f04ded81da17e4da645815'} className="flex bg-[#ffc139] p-5 w-1/6 text-white rounded-full hover:text-[#ffc139] hover:bg-white  hover:outline hover:outline-[#ffc139] duration-500"><FaPlus className="text-xl"/></Link>
+            <Link href={'/category/65f04ded81da17e4da645815'} className="flex items-center justify-center bg-[#ffc139] p-5 w-16 text-white rounded-full hover:text-[#ffc139] hover:bg-white  hover:outline hover:outline-[#ffc139] duration-500"><FaPlus className="text-xl"/></Link>
           </div>
           <div className="w-full">
             <img src="/Untitled-4.webp"/>
@@ -158,26 +179,35 @@ export default function Home() {
           {selectedCategoryId && products?.map(product => (
             <div 
               key={product._id} 
-              className="flex flex-col gap-5 w-1/4 p-6 border border-[#d4d4d4] hover:shadow-xl duration-500 relative"
+              className="flex flex-col gap-2 w-1/4  p-6 border border-[#d4d4d4] hover:shadow-xl duration-500 relative py-18"
             >
               <Link className="w-full h-4/6 transition-opacity duration-300 hover:opacity-75" href={`/productdetail/${product._id}`}>
                 <img src={`${process.env.NEXT_PUBLIC_API_UPLOAD}/${product.name}/${product.images[0]}`} 
                       alt="images product" 
-                      className="w-full h-full object-cover"/>
+                      className="h-full w-full object-contain"/>
               </Link>
-              <div className="w-full h-1/6 text-lg font-medium">{product.name}</div>
-              <div className="flex items-center justify-between w-full h-1/6 text-[#ffc139] text-xl font-semibold">
-                <div className="text-2xl">$ {product.price}</div>
+              <div className="w-full h-1/6 text-lg font-semibold ">{product.name}</div>
+              <div className="flex items-center justify-between w-full h-1/6 ">
+                <div className="flex flex-col gap-2 justify-between w-1/2">
+                  <div className="h-1/2 w-full text-[#ffc139] text-2xl font-semibold">$ {product.price}</div>
+                  <div className="flex flex-col h-1/2 w-full">
+                    <div><span className="font-semibold">Sold</span>: {product.sold}</div>
+                    <div><span className="font-semibold">Review</span>: {product.reviewId.length}</div>
+                  </div>
+                </div>
                 {product?.status === 'SoldOut' ? (
                     <div className="absolute top-0 right-0 w-[120px] h-[150px]">
                       <img src='/corner-sold-out-ribbon-banner-260nw-1325587067-Photoroom.png-Photoroom.png' className="w-full h-full"/>
                     </div>
                 ) : (
-                    <div onClick={() => handleAddToCart(product)} className="flex bg-[#ffc139] p-3 w-1/6 text-white rounded-full hover:text-[#ffc139] hover:bg-white  hover:outline hover:outline-[#ffc139] duration-500 cursor-pointer">
-                      <CiShoppingCart/>
+                    <div onClick={() => handleAddToCart(product)} className="flex items-center justify-center bg-[#ffc139] p-3 w-12 h-12 text-white rounded-full hover:text-[#ffc139] hover:bg-white  hover:outline hover:outline-[#ffc139] duration-500 cursor-pointer">
+                      <CiShoppingCart className="w-full h-full"/>
                     </div>
                 )}
               </div>
+              {/* <div className="w-full bg-blue-200">
+
+              </div> */}
             </div>
           ))}
         </div>

@@ -5,6 +5,7 @@ import { FaUserGroup } from "react-icons/fa6";
 import { FaUserTie } from "react-icons/fa";
 import { PiHamburgerFill } from "react-icons/pi";
 import { MdPayments } from "react-icons/md";
+import { FaHandHoldingDollar } from "react-icons/fa6";
 import { Bubble, Line, Pie, Doughnut, Bar, Area } from "react-chartjs-2";
 import { Chart as ChartJS, defaults } from "chart.js/auto";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
@@ -56,7 +57,7 @@ const Dashboard = () => {
         }
     }
 
-    console.log(order);
+
     useEffect(() => {
         fetchCustomer();
         fetchStaff();
@@ -99,48 +100,71 @@ const Dashboard = () => {
     const productsByCategory = calculateProductsByCategory();
 
     const total = customer.length + staff.length;
-    const customerPercentage = (customer.length / total) * 100;
-    const staffPercentage = (staff.length / total) * 100;
+    // const customerPercentage = (customer.length / total) * 100;
+    // const staffPercentage = (staff.length / total) * 100;
+    const customerCount = customer.length;
+    const staffCount = staff.length;
 
     const months = [
         'January', 'February', 'March', 'April', 'May', 'June',
         'July', 'August', 'September', 'October', 'November', 'December'
     ];
 
+
+    const totalRevenue = () => {
+        const revenue = order.reduce((total, ord) => {
+            const orderPrice = parseFloat(ord.totalPrice);
+            return total + orderPrice;
+        }, 0);
+        return revenue;
+    }
+
+    const calculateMonthlyRevenue = () => {
+        const monthlyRevenue = Array(12).fill(0); // Tạo mảng 12 phần tử ban đầu có giá trị 0 cho 12 tháng trong năm
+        order.forEach(orderItem => {
+            const month = new Date(orderItem.createdAt).getMonth(); // Lấy tháng từ ngày tạo đơn hàng
+            const orderPrice = parseFloat(orderItem.totalPrice);
+            if (orderItem.status === 'Delivered') { // Chỉ tính các đơn hàng đã được giao (delivered)
+                monthlyRevenue[month] += orderPrice; // Cộng tổng doanh thu của đơn hàng vào tháng tương ứng
+            }
+        });
+        return monthlyRevenue;
+    };
     // console.log(product)
     // console.log(customer)
     // console.log(category);
     // console.log(staff)
-    // console.log(order)
-
+    console.log(order)
+    // console.log(totalRevenue()) ;
+    
     return ( 
         <div className="flex flex-col gap-6 h-full w-full p-2">
             <div className="flex gap-5 items-center justify-between w-full h-1/6">
-                <Link href={'/dashboard/user'} className="flex items-center p-2  gap-2 bg-gradient-to-r from-[#005AA7] to-[#36D1DC] text-white  border h-full w-1/4 rounded-xl hover:bg-[#4b6cb7] hover:shadow-xl hover:opacity-70 duration-500">
-                    <div className="flex items-center justify-center w-1/3 h-full font-semibold text-5xl"><FaUserGroup /></div>
-                    <div className="flex flex-col w-2/3 py-2 h-full">
-                        <div className="w-full h-2/4 flex items-center justify-center text-5xl font-semibold">{customer.length}</div>
-                        <div className="w-full h-2/4 flex items-center justify-center text-sm">Available Customer</div>
+                <Link href={'/dashboard'} className="flex items-center p-2  gap-2 bg-gradient-to-r from-[#005AA7] to-[#36D1DC] text-white  border h-full w-1/4 rounded-xl hover:bg-[#4b6cb7] hover:shadow-xl hover:opacity-70 duration-500">
+                    <div className="flex items-center justify-center w-1/3 h-full font-semibold text-5xl"><FaHandHoldingDollar /></div>
+                    <div className="flex flex-col w-2/3 py-2 h-full ">
+                        <div className="w-full h-2/4 flex items-center justify-center text-4xl font-semibold">{totalRevenue().toFixed(2)}</div>
+                        <div className="w-full h-2/4 flex items-center justify-center text-sm">Total Revenue</div>
                     </div>
                 </Link>
-                <Link href={'/dashboard/user/staff'} className="flex items-center p-2  gap-2 bg-gradient-to-r from-[#005AA7] to-[#36D1DC] text-white border h-full w-1/4 rounded-xl hover:bg-[#4b6cb7] hover:shadow-xl hover:opacity-70 duration-500">
+                <Link href={`/dashboard/user?user=Customer`} className="flex items-center p-2  gap-2 bg-gradient-to-r from-[#005AA7] to-[#36D1DC] text-white border h-full w-1/4 rounded-xl hover:bg-[#4b6cb7] hover:shadow-xl hover:opacity-70 duration-500">
                     <div className="flex items-center justify-center w-1/3 h-full font-semibold text-5xl"><FaUserTie/></div>
                     <div className="flex flex-col w-2/3 py-2 h-full">
-                        <div className="w-full h-2/4 flex items-center justify-center text-5xl font-semibold">{staff.length}</div>
-                        <div className="w-full h-2/4 flex items-center justify-center text-sm">Available Staff</div>
+                        <div className="w-full h-2/4 flex items-center justify-center text-4xl font-semibold">{staff.length + customer.length}</div>
+                        <div className="w-full h-2/4 flex items-center justify-center text-sm">Availabel User</div>
                     </div>
                 </Link>
                 <Link href={'/dashboard/product'} className="flex items-center p-2  gap-2 bg-gradient-to-r from-[#005AA7] to-[#36D1DC] text-white border h-full w-1/4 rounded-xl hover:bg-[#4b6cb7] hover:shadow-xl hover:opacity-70 duration-500">
                     <div className="flex items-center justify-center w-1/3 h-full font-semibold text-5xl"><PiHamburgerFill/></div>
                     <div className="flex flex-col w-2/3 py-2 h-full">
-                        <div className="w-full h-2/4 flex items-center justify-center text-5xl font-semibold">{product.length}</div>
+                        <div className="w-full h-2/4 flex items-center justify-center text-4xl font-semibold">{product.length}</div>
                         <div className="w-full h-2/4 flex items-center justify-center text-sm">Available Product</div>
                     </div>
                 </Link>
                 <Link href={'/dashboard/order?status=Delivered'} className="flex items-center p-2  gap-2 bg-gradient-to-r from-[#005AA7] to-[#36D1DC] text-white border h-full w-1/4 rounded-xl hover:bg-[#4b6cb7] hover:shadow-xl hover:opacity-70 duration-500">
                     <div className="flex items-center justify-center w-1/3 h-full font-semibold text-5xl"><MdPayments/></div>
                     <div className="flex flex-col w-2/3 py-2 h-full">
-                        <div className="w-full h-2/4 flex items-center justify-center text-5xl font-semibold">{order.length}</div>
+                        <div className="w-full h-2/4 flex items-center justify-center text-4xl font-semibold">{order.length}</div>
                         <div className="w-full h-2/4 flex items-center justify-center text-sm">Total Order</div>
                     </div>
                 </Link>
@@ -164,6 +188,13 @@ const Dashboard = () => {
                                     backgroundColor: '#FF6384',
                                     borderColor: '#FF6384',
                                     borderWidth: 3
+                                },
+                                {
+                                    label: "Monthly Revenue",
+                                    data: calculateMonthlyRevenue(), // Lấy dữ liệu tổng doanh thu từ mỗi đơn hàng
+                                    backgroundColor: '#36D1DC',
+                                    borderColor: '#36D1DC',
+                                    borderWidth: 3
                                 }
     
                             ]
@@ -173,7 +204,7 @@ const Dashboard = () => {
                             plugins: {
                                 title: {
                                     display: true,
-                                    text: 'Number of orders and products by monthy',
+                                    text: 'Number of orders, products bought, and total revenue by month',
                                     font: {
                                         size: 16,
                                         weight: 'bold'
@@ -222,7 +253,8 @@ const Dashboard = () => {
                             data={{
                                 labels: ['Customers', 'Staff'],
                                 datasets: [{
-                                    data: [customerPercentage, staffPercentage],
+                                    label: 'Quantity',
+                                    data: [customerCount, staffCount],
                                     backgroundColor: ['#FF6384', '#36A2EB'],
                                     hoverOffset: 4,
                                 }]
@@ -231,7 +263,7 @@ const Dashboard = () => {
                                 plugins: {
                                     title: {
                                         display: true,
-                                        text: 'Percentage of Customers and Staff',
+                                        text: 'Number of Customers and Staff',
                                         font: {
                                             size: 16,
                                             weight: 'bold'

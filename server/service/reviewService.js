@@ -165,14 +165,14 @@ const reviewService = {
     //     }
     // },
     // Hàm để đề xuất sản phẩm dựa trên collaborative filtering (Item-Based CF)
-    recommendProducts: async (userId, limit) => {
+    recommendProducts: async (userId) => {
         try {
             let recommendations = [];
     
             if (!userId) {
                 // Nếu người dùng chưa đăng nhập, hoặc là người dùng mới không có dữ liệu đánh giá
                 // Đề xuất các sản phẩm phổ biến
-                recommendations = await reviewService.getPopularProducts(limit);
+                recommendations = await reviewService.getPopularProducts();
             } else {
                 // Người dùng đã đăng nhập
                 const userReviews = await Review.find({ userID: userId });
@@ -181,11 +181,11 @@ const reviewService = {
                 if (reviewedProductIds.length === 0) {
                     // Nếu người dùng đã đăng nhập nhưng chưa có dữ liệu đánh giá
                     // Đề xuất các sản phẩm phổ biến
-                    recommendations = await reviewService.getPopularProducts(limit);
+                    recommendations = await reviewService.getPopularProducts();
                 } else {
                     // Người dùng đã có dữ liệu đánh giá
                     const similarityMatrix = await reviewService.calculateItemSimilarity();
-                    recommendations = reviewService.getRecommendations(reviewedProductIds, similarityMatrix, limit);
+                    recommendations = reviewService.getRecommendations(reviewedProductIds, similarityMatrix);
                 }
             }
     
@@ -211,17 +211,17 @@ const reviewService = {
             throw new Error('Error recommending products: ' + error.message);
         }
     },
-    getPopularProducts: async (limit) => {
+    getPopularProducts: async () => {
         try {
             // Lấy danh sách các sản phẩm phổ biến hoặc ngẫu nhiên
-            const popularProducts = await Product.find().limit(limit).sort({ views: -1 }); // Sắp xếp theo số lượng lượt xem hoặc đánh giá
+            const popularProducts = await Product.find().limit(15).sort({ sold: -1 }); // Sắp xếp theo số lượng bán được giảm dần
             return popularProducts.map(product => ({ productId: product._id, score: product.popularityScore }));
         } catch (error) {
             throw new Error('Error getting popular products: ' + error.message);
         }
     },
     // Hàm để đề xuất sản phẩm dựa trên ma trận tương tự và danh sách sản phẩm đã đánh giá
-    getRecommendations: (reviewedProductIds, similarityMatrix, limit) => {
+    getRecommendations: (reviewedProductIds, similarityMatrix) => {
         const recommendations = {};
 
         reviewedProductIds.forEach(productId1 => {
@@ -239,8 +239,8 @@ const reviewService = {
             .sort(([, score1], [, score2]) => score2 - score1)
             .map(([productId, score]) => ({ productId, score }));
 
-        // return sortedRecommendations;
-        return sortedRecommendations.slice(0, limit);
+        return sortedRecommendations;
+        // return sortedRecommendations.slice(0, limit);
     },
     createReponseText: async(id, userIDResponse, textResponse) => {
         try {

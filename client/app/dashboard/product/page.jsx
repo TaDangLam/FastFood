@@ -75,7 +75,7 @@ const Product = () => {
         <div className="flex flex-col gap-3 w-full h-full">
           <Link
             href={"/dashboard/product/new"}
-            className="bg-[#4b6cb7] text-white rounded-md py-1 px-2 w-2/12 h-1/6 text-center"
+            className="bg-[#4b6cb7] text-white rounded-md py-1 px-2 w-2/12 h-1/6 text-center hover:opacity-85 duration-200"
           >
             Add New Product
           </Link>
@@ -112,7 +112,7 @@ const Product = () => {
                     >
                       <Link
                         href={`/dashboard/product/edit/${product._id}`}
-                        className="flex bg-[#4b6cb7] p-2 gap-1 rounded-lg text-white hover:bg-blue-700 w-1/2  items-center justify-center"
+                        className="flex bg-[#4b6cb7] p-2 gap-1 rounded-lg text-white hover:bg-blue-700 w-1/2  items-center justify-center duration-200"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -132,7 +132,7 @@ const Product = () => {
                       </Link>
                       <div
                         onClick={() => handleRemoveProduct(product._id)}
-                        className="flex bg-slate-400 p-2 gap-1 rounded-lg text-white hover:bg-rose-700 w-1/2  items-center justify-center cursor-pointer"
+                        className="flex bg-slate-400 p-2 gap-1 rounded-lg text-white hover:bg-rose-700 w-1/2  items-center justify-center cursor-pointer duration-200"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"

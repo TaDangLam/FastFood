@@ -107,7 +107,7 @@ const CategoryPage = () => {
                                 <td className={`${border1} flex items-center justify-center gap-2 h-full px-2 py-1.5`}>
                                     <div
                                         onClick={() => handleRemoveCategory(cate._id)}
-                                        className="flex bg-slate-400 p-2 gap-1 rounded-lg text-white hover:bg-rose-700 w-1/2  items-center justify-center cursor-pointer"
+                                        className="flex bg-slate-400 p-2 gap-1 rounded-lg text-white hover:bg-rose-700 w-1/2  items-center justify-center cursor-pointer duration-200"
                                     >
                                         <svg
                                         xmlns="http://www.w3.org/2000/svg"

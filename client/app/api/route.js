@@ -194,7 +194,7 @@ export const getRecommandProduct = async(accessToken) => {
     try {
         const response = await axios.get(`${baseUrl}/review/recommendations`, {
             headers: {
-                token: `Bearer ${accessToken}`
+                token: accessToken ? `Bearer ${accessToken}` : null
             }
         });
         return response.data;

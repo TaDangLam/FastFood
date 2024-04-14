@@ -206,8 +206,8 @@ const OrderPage = () => {
                                     <td className={`${border1} p-2`}>
                                         {order.status === 'Cancel' ? (
                                             <div className="flex items-center gap-2">
-                                                <Link className="flex items-center justify-center  gap-2 bg-slate-300 p-1 rounded-lg hover:bg-lime-700 hover:text-white w-1/2 h-full" href={`/dashboard/order/${order._id}`}><MdOutlineBorderColor/>Detail</Link>
-                                                <div onClick={() => handleRemoveOrder(order._id, accessToken)} className="flex items-center justify-center  gap-2 bg-slate-300 p-1 rounded-lg hover:bg-lime-700 hover:text-white w-1/2 h-full cursor-pointer">
+                                                <Link className="flex items-center justify-center  gap-2 bg-slate-300 p-1 rounded-lg hover:bg-lime-700 hover:text-white w-1/2 h-full duration-200" href={`/dashboard/order/${order._id}`}><MdOutlineBorderColor/>Detail</Link>
+                                                <div onClick={() => handleRemoveOrder(order._id, accessToken)} className="flex items-center justify-center  gap-2 bg-slate-300 p-1 rounded-lg hover:bg-red-700 hover:text-white w-1/2 h-full cursor-pointer duration-200">
                                                     <IoTrashBinOutline />
                                                     Delete
                                                 </div> 

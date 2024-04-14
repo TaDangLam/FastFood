@@ -39,8 +39,9 @@ const ReviewController = {
                 userId = null;
             }
             // Gọi hàm recommendProducts từ reviewService
-            const limit = parseInt(req.query.limit, 10) || 10;
-            const recommendations = await reviewService.recommendProducts(userId, limit);
+            // const limit = parseInt(req.query.limit, 10) || 10;
+            // const recommendations = await reviewService.recommendProducts(userId, limit);
+            const recommendations = await reviewService.recommendProducts(userId);
 
             // Trả về danh sách các sản phẩm đề xuất
             res.status(StatusCodes.OK).json(recommendations);

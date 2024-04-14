@@ -67,7 +67,7 @@ const Category = () => {
                 <div className='flex flex-col h-full w-9/12 gap-3 py-6 '>
                     <div className='flex justify-end w-full h-1/6 '>
                         <select 
-                            className='border-2 p-2 rounded-lg'
+                            className='border-2 p-2 rounded-lg font-semibold'
                             value={sortOrder} 
                             onChange={(e) => handleSortChange(e.target.value)}
                         >

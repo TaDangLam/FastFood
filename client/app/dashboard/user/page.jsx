@@ -228,14 +228,14 @@ const User = () => {
                       <div className="flex gap-2">
                           <div
                             onClick={() => handleDownPermission(data._id, accessToken)}
-                            className="flex items-center bg-red-900 p-1 gap-1 rounded-lg text-white hover:bg-red-700 cursor-pointer"
+                            className="flex items-center bg-red-900 p-1 gap-1 rounded-lg text-white hover:bg-red-700 cursor-pointer duration-200"
                             >
-                            <TbUserDown className="text-lg"/>
-                            Eviction
+                                <TbUserDown className="text-lg"/>
+                                Eviction
                           </div>
                           <div
                             onClick={() => handleDeleteUser(data._id)}
-                            className="flex bg-slate-400 p-1 gap-1 rounded-lg text-white hover:bg-red-800 cursor-pointer"
+                            className="flex bg-slate-400 p-1 gap-1 rounded-lg text-white hover:bg-red-800 cursor-pointer duration-200"
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"

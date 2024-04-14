@@ -119,7 +119,7 @@ const ProductDetail = () => {
         });
       }
 
-    console.log(productRecommand);
+    console.log(accessToken);
     return ( 
         <div className="margin-component mt-[31px] flex gap-5 relative">
             <div className="flex flex-col h-full w-9/12 border-r-2 pr-3 border-b-2 pb-3 gap-2">

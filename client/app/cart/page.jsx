@@ -54,7 +54,7 @@ const Cart = () => {
     const sum =  carts.reduce((total, cart) => total + cart.total, 0);
     const roundedSum = sum.toFixed(2);
     
-    console.log(carts)
+    // console.log(carts)
 
     return ( 
         <div className="margin-component mt-[31px] flex flex-col gap-5">
@@ -111,7 +111,9 @@ const Cart = () => {
                     </div>
                 </div>
             ) : (
-                <div>No Product</div>
+                <div className="flex items-center justify-center">
+                    <img src="/empty-cart.png" alt="images-NoProduct" />
+                </div>
             )}
         </div>
      );

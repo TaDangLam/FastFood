@@ -241,10 +241,10 @@ const Header = () => {
                                     <Link href={'/'} className={`flex items-center gap-2 duration-200 ${isHovered ? 'text-[#ffc139]' : 'hover:text-[#ffc139]'}`}>HOME <FaAngleDown/></Link>
                                 </Tippy>  
                             </li>
-                            <li className="p-2 hover:text-[#ffc139] font-semibold duration-200"><Link href={'/about'}>ABOUT</Link></li>
-                            <li className="p-2 hover:text-[#ffc139] font-semibold duration-200"><Link href={'/food'}>FOOD</Link></li>
-                            <li className="p-2 hover:text-[#ffc139] font-semibold duration-200"><Link href={'/delivery'}>DELIVERY</Link></li>
-                            <li className="p-2 hover:text-[#ffc139] font-semibold duration-200"><Link href={'/contact'}>CONTACT</Link></li>
+                            <li className="p-2 hover:text-[#ffc139] font-semibold duration-200"><Link href={'/'}>ABOUT</Link></li>
+                            <li className="p-2 hover:text-[#ffc139] font-semibold duration-200"><Link href={'/'}>FOOD</Link></li>
+                            <li className="p-2 hover:text-[#ffc139] font-semibold duration-200"><Link href={'/'}>DELIVERY</Link></li>
+                            <li className="p-2 hover:text-[#ffc139] font-semibold duration-200"><Link href={'/'}>CONTACT</Link></li>
                         </ul>
                     </div>
                     <div className="flex gap-3 justify-center w-2/6">
