@@ -6,7 +6,8 @@ import authMiddleWare from '../middleware/authMiddleware.js'
 
 Router.get('/get-all-order', authMiddleWare.verifyTokenAdmin, OrderController.getAllOrder);
 Router.get('/get-all-order-user', authMiddleWare.verifyCustomer, OrderController.getAllOrderForUser);
-Router.get('/search', authMiddleWare.verifyTokenAdmin, OrderController.searchOrder);
+Router.get('/search', authMiddleWare.verifyTokenStaff, OrderController.searchOrder);
+Router.get('/search-for-customer', authMiddleWare.verifyCustomer, OrderController.searchOrderCustomer)
 Router.get('/pending', authMiddleWare.verifyCustomer, OrderController.getAllOrderPendingForUser);
 Router.get('/processing', authMiddleWare.verifyCustomer, OrderController.getAllProcessingOrderForUser);
 Router.get('/delivered', authMiddleWare.verifyCustomer, OrderController.getAllDeliveredOrderForUser);

@@ -3,14 +3,16 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Swal from "sweetalert2";
+import { FaSearch } from "react-icons/fa";
 
-import { getAllOrderUser, getAllOrderPendingUser, getAllOrderProcessingUser, getAllOrderDeliveredUser, getAllOrderCancleUser, updateStatusOrderToDelivered, createOriginalReview } from "@/app/api/route";
+import { getAllOrderUser, getAllOrderPendingUser, getAllOrderProcessingUser, getAllOrderDeliveredUser, getAllOrderCancleUser, updateStatusOrderToDelivered, createOriginalReview, searchOrderForCustomer } from "@/app/api/route";
 
 const Order = () => {
     const router = useRouter();
     const accessToken = sessionStorage.getItem('accessToken');
     const path = useSearchParams().get('path');
     const [orders, setOrders] = useState([]);
+    const [searchOrders, setSearchOrders] = useState('');
 
     const getAllOrderForUser = async(accessToken) => {
         try {
@@ -178,9 +180,44 @@ const Order = () => {
         });
     }
     
-    console.log(orders);
+    const handleSubmitSearch = async(e) => {
+        e.preventDefault();
+        try {
+            const newSearch = await searchOrderForCustomer(searchOrders, accessToken);
+            setOrders(newSearch);
+        } catch (error) {
+            Swal.fire({
+                position: "center",
+                icon: "error",
+                title: `${error.response.data.error}`,
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }
+    }
+    // console.log(orders);
     return (
-        <div className="w-full h-full p-2">
+        <div className="flex flex-col gap-5 w-full h-full p-2">
+            <div className="">
+                <form
+                    onSubmit={handleSubmitSearch}
+                    className="flex w-1/2 h-full relative"
+                >
+                    <input
+                        type="text"
+                        value={searchOrders}
+                        onChange={e => setSearchOrders(e.target.value)}
+                        placeholder="Search for Order (By ID)" 
+                        className="appearance-none block w-full h-full bg-[#f1f5f9] text-gray-700 border border-gray-100 rounded-l-xl rounded-r-xl p-4 focus:outline-none focus:ring-1 focus:ring-slate-300"
+                    />
+                    <button
+                        type="submit"
+                        className="bg-slate-100 text-black rounded-r-xl h-full p-4 flex items-center justify-center absolute right-0 border-l-2"
+                    >
+                        <FaSearch />
+                    </button>
+                </form>
+            </div>
             {orders && orders.length > 0 ? (
                 <div className="flex flex-col gap-5 w-full h-full">
                     {orders.map(order => (
@@ -215,7 +252,9 @@ const Order = () => {
                     ))}
                 </div>
             ) : (
-                <div>No Order . Please Order...</div>
+                <div className="flex items-center justify-center">
+                    <img src="/noOrderCustomer.jpg" alt="images" className=""/>
+                </div>
             )}
         </div>
      );

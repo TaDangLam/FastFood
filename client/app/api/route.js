@@ -459,6 +459,16 @@ export const searchOrder = async(keyword, accessToken) => {
     }
 }
 
+export const searchOrderForCustomer = async(keyword, accessToken) => {
+    try {
+        const response = await axios.get(`${baseUrl}/order/search-for-customer?keyword=${keyword}`, {headers: {'token': `Bearer ${accessToken}` }});
+        return(response.data.data);
+    } catch (error) {
+        console.log('Search Order For Customer error: ', error);
+        throw error;
+    }
+}
+
 export const createOrder = async(data, accessToken) => {
     try {
         const { orderBy, paymentType, totalPrice, orderDetail, address, isPaid } = data

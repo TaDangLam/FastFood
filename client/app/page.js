@@ -84,7 +84,7 @@ export default function Home() {
           <img src="Untitled-1.webp"/>
         </div>
         <div className="flex flex-col gap-9 w-1/2">
-          <div className="text-5xl font-semibold">BEST SALE ALWAYS</div>
+          <div className="text-5xl font-semibold">BEST <span className="text-[#ffc139]"> SALE</span> ALWAYS</div>
           <div className="flex items-center gap-3">
             <div className="text-[#ffc139]"><IoStar /></div>
             <div className="text-[#ffc139]"><IoStar /></div>

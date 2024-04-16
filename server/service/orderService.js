@@ -50,18 +50,77 @@ const orderService = {
         }
     },
     searchOrder: async(keyword) => {
+        // try {
+        //     let orders;
+            
+        //     const isValidObjectId = mongoose.Types.ObjectId.isValid(keyword);
+            
+        //     if (isValidObjectId) {
+        //         orders = await Order.find({ _id: keyword }).populate({path: 'orderBy', select: '_id name email phone'})
+        //                                                     .populate('orderDetail.productId');
+        //     } else {
+        //         throw new Error('Search No Data Order');
+        //     }
+            
+        //     return {
+        //         status: 'OK',
+        //         data: orders
+        //     };
+        // } catch (error) {
+        //     throw new Error(error.message);
+        // }
         try {
             let orders;
-            
             const isValidObjectId = mongoose.Types.ObjectId.isValid(keyword);
-            
+    
             if (isValidObjectId) {
-                orders = await Order.find({ _id: keyword }).populate({path: 'orderBy', select: '_id name email phone'})
-                                                            .populate('orderDetail.productId');
+                orders = await Order.find({ _id: keyword })
+                    .populate({ path: 'orderBy', select: '_id name email phone' })
+                    .populate('orderDetail.productId');
             } else {
-                throw new Error('Search No Data Order');
+                orders = await Order.find({
+                    $or: [
+                        { status: { $regex: keyword, $options: 'i' } }
+                    ]
+                })
+                    .populate({ path: 'orderBy', select: '_id name email phone' })
+                    .populate('orderDetail.productId');
             }
-            
+    
+            if (!orders || orders.length === 0) {
+                throw new Error('No matching orders found');
+            }
+    
+            return {
+                status: 'OK',
+                data: orders
+            };
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    },
+    searchOrderCustomer: async(keyword, userId) => {
+        try {
+            let orders;
+            const isValidObjectId = mongoose.Types.ObjectId.isValid(keyword);
+    
+            if (isValidObjectId) {
+                orders = await Order.find({ _id: keyword, orderBy: userId })
+                    .populate({ path: 'orderBy', select: '_id name email phone' })
+                    .populate('orderDetail.productId');
+            } else {
+                orders = await Order.find({
+                    status: { $regex: keyword, $options: 'i' },
+                    orderBy: userId
+                })
+                    .populate({ path: 'orderBy', select: '_id name email phone' })
+                    .populate('orderDetail.productId');
+            }
+    
+            if (!orders || orders.length === 0) {
+                throw new Error('No matching orders found');
+            }
+    
             return {
                 status: 'OK',
                 data: orders

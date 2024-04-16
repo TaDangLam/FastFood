@@ -37,6 +37,16 @@ const OrderController = {
             res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: error.message });
         }
     },
+    searchOrderCustomer: async(req, res) => {
+        try {
+            const { keyword } = req.query;
+            const userId = req.user.payload.id;
+            const response = await orderService.searchOrderCustomer(keyword, userId);
+            res.status(StatusCodes.OK).json(response);
+        } catch (error) {
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: error.message });
+        }
+    },
     getAllProcessingOrderForUser: async(req, res) => {
         try {
             const userId = req.user.payload.id;

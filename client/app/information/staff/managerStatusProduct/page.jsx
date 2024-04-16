@@ -105,18 +105,18 @@ const ManagerStatusProduct = () => {
             <div className="flex items-center w-full">
                 <form
                     onSubmit={handleSubmitSearch}
-                    className="flex w-1/2 h-full"
+                    className="flex w-1/2 h-full relative"
                 >
                     <input
                         type="text"
                         value={searchText}
                         onChange={e => setSearchText(e.target.value)}
                         placeholder="Search for products (By ID, Name, Status)" 
-                        className="appearance-none block w-9/12 h-full bg-[#f1f5f9] text-gray-700 border border-gray-100 rounded-l-xl p-4 focus:outline-none"
+                        className="appearance-none block w-full h-full bg-[#f1f5f9] text-gray-700 border border-gray-100 rounded-l-xl rounded-r-xl p-4 focus:outline-none focus:ring-1 focus:ring-slate-300"
                     />
                     <button
                         type="submit"
-                        className="bg-slate-100 text-black rounded-r-xl h-full p-4 flex items-center justify-center "
+                        className="bg-slate-100 text-black rounded-r-xl h-full p-4 flex items-center justify-center absolute right-0 border-l-2"
                     >
                         <FaSearch />
                     </button>
@@ -215,7 +215,9 @@ const ManagerStatusProduct = () => {
                     </div> 
                 </div>
             ) : (
-                <div>Product Not Found</div>
+                <div className="flex items-center justify-center">
+                    <img src="/productNotFound.png" alt="images" />
+                </div>
             )}
         </div>
     );

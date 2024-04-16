@@ -88,7 +88,6 @@ const OrderPage = () => {
               });
         }
     }
-    console.log(orders);
 
     const handleRemoveOrder = (id, accessToken) => {
         Swal.fire({
@@ -150,7 +149,7 @@ const OrderPage = () => {
                     <div className="text-[#4b6cb7] text-3xl font-bold w-2/12 h-1/6 border-b-4 border-[#4b6cb7]">Order</div>
                     <div className="text-[#4b6cb7] font-bold w-full h-1/6 flex gap-2">
                         <div className="flex items-center gap-2 w-1/2">
-                            <div onClick={() => handleClickStatusOrder('Delivered')} className="w-1/4 p-2 text-md text-center rounded-xl text-white bg-[#4b6cb7] hover:opacity-80 cursor-pointer duration-300">Complete</div>
+                            <div onClick={() => handleClickStatusOrder('Delivered')} className="w-1/4 p-2 text-md text-center rounded-xl text-white bg-[#4b6cb7] hover:opacity-80 cursor-pointer duration-300">Delivered</div>
                             <div onClick={() => handleClickStatusOrder('Processing')} className="w-1/4 p-2 text-md text-center rounded-xl text-white bg-[#4b6cb7] hover:opacity-80 cursor-pointer duration-300">Processing</div>
                             <div onClick={() => handleClickStatusOrder('Pending')} className="w-1/4 p-2 text-md text-center rounded-xl text-white bg-[#4b6cb7] hover:opacity-80 cursor-pointer duration-300">Pending</div>
                             <div onClick={() => handleClickStatusOrder('Cancel')} className="w-1/4 p-2 text-md text-center rounded-xl text-white bg-[#4b6cb7] hover:opacity-80 cursor-pointer duration-300">Cancel</div>
@@ -176,53 +175,59 @@ const OrderPage = () => {
                             </form>
                         </div>
                     </div>
-                    <table className={`table-auto border-collapse ${border1} w-full h-4/6 mt-5`}>
-                        <thead>
-                            <tr className="bg-[#4b6cb7] text-white text-center">
-                                <td className={border2}>Index</td>
-                                <td className={border2}>OrderBy</td>
-                                <td className={border2}>OrderId</td>
-                                {/* <td className={border2}>Method</td>
-                                <td className={border2}>IsPaid</td> */}
-                                <td className={border2}>OrderAt</td>
-                                <td className={border2}>Status</td>
-                                <td className={border2}>Total</td>
-                                <td className={border2}></td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {orders.map((order, index) => (
-                                <tr key={order._id} className="">
-                                    <td className={`${border1} pl-2 text-center`}>{index + 1}</td>
-                                    <td className={`${border1} pl-2`}>{order.orderBy?.name}</td>
-                                    <td className={`${border1} pl-2`}>{order._id}</td>
-                                    {/* <td className={`${border1} pl-2`}>{order.paymentType}</td>
-                                    <td className={`${border1} pl-2 text-center`}>{renderIsPaid(order.isPaid)}</td> */}
-                                    <td className={`${border1} pl-2 text-center`}>
-                                        {format(new Date(order.createdAt), 'HH:mm dd-MM-yyyy')}
-                                    </td>
-                                    <td className={`${border1} pl-2`}>{order.status}</td>
-                                    <td className={`${border1} pl-2 flex items-center justify-center h-full`}><span className="text-btn text-lg font-semibold">{order.totalPrice}</span> <BsCurrencyDollar/></td>
-                                    <td className={`${border1} p-2`}>
-                                        {order.status === 'Cancel' ? (
-                                            <div className="flex items-center gap-2">
-                                                <Link className="flex items-center justify-center  gap-2 bg-slate-300 p-1 rounded-lg hover:bg-lime-700 hover:text-white w-1/2 h-full duration-200" href={`/dashboard/order/${order._id}`}><MdOutlineBorderColor/>Detail</Link>
-                                                <div onClick={() => handleRemoveOrder(order._id, accessToken)} className="flex items-center justify-center  gap-2 bg-slate-300 p-1 rounded-lg hover:bg-red-700 hover:text-white w-1/2 h-full cursor-pointer duration-200">
-                                                    <IoTrashBinOutline />
-                                                    Delete
-                                                </div> 
-                                            </div>
-                                        ) : (
-                                            <div className="">
-                                                <Link className="flex items-center justify-center  gap-2 bg-slate-300 p-1 rounded-lg hover:bg-lime-700 hover:text-white h-full" href={`/dashboard/order/${order._id}`}><MdOutlineBorderColor/>Detail</Link>
-                                            </div> 
-                                        )}
-                                        
-                                    </td>
+                    {orders && orders.length > 0 ? (
+                        <table className={`table-auto border-collapse ${border1} w-full h-4/6 mt-5`}>
+                            <thead>
+                                <tr className="bg-[#4b6cb7] text-white text-center">
+                                    <td className={border2}>Index</td>
+                                    <td className={border2}>OrderBy</td>
+                                    <td className={border2}>OrderId</td>
+                                    {/* <td className={border2}>Method</td>
+                                    <td className={border2}>IsPaid</td> */}
+                                    <td className={border2}>OrderAt</td>
+                                    <td className={border2}>Status</td>
+                                    <td className={border2}>Total</td>
+                                    <td className={border2}></td>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {orders.map((order, index) => (
+                                    <tr key={order._id} className="">
+                                        <td className={`${border1} pl-2 text-center`}>{index + 1}</td>
+                                        <td className={`${border1} pl-2`}>{order.orderBy?.name}</td>
+                                        <td className={`${border1} pl-2`}>{order._id}</td>
+                                        {/* <td className={`${border1} pl-2`}>{order.paymentType}</td>
+                                        <td className={`${border1} pl-2 text-center`}>{renderIsPaid(order.isPaid)}</td> */}
+                                        <td className={`${border1} pl-2 text-center`}>
+                                            {format(new Date(order.createdAt), 'HH:mm dd-MM-yyyy')}
+                                        </td>
+                                        <td className={`${border1} pl-2`}>{order.status}</td>
+                                        <td className={`${border1} pl-2 flex items-center justify-center h-full`}><span className="text-btn text-lg font-semibold">{order.totalPrice}</span> <BsCurrencyDollar/></td>
+                                        <td className={`${border1} p-2`}>
+                                            {order.status === 'Cancel' ? (
+                                                <div className="flex items-center gap-2">
+                                                    <Link className="flex items-center justify-center  gap-2 bg-slate-300 p-1 rounded-lg hover:bg-lime-700 hover:text-white w-1/2 h-full duration-300" href={`/dashboard/order/${order._id}`}><MdOutlineBorderColor/>Detail</Link>
+                                                    <div onClick={() => handleRemoveOrder(order._id, accessToken)} className="flex items-center justify-center  gap-2 bg-slate-300 p-1 rounded-lg hover:bg-red-700 hover:text-white w-1/2 h-full cursor-pointer duration-200">
+                                                        <IoTrashBinOutline />
+                                                        Delete
+                                                    </div> 
+                                                </div>
+                                            ) : (
+                                                <div className="">
+                                                    <Link className="flex items-center justify-center  gap-2 bg-slate-300 p-1 rounded-lg hover:bg-lime-700 hover:text-white h-full" href={`/dashboard/order/${order._id}`}><MdOutlineBorderColor/>Detail</Link>
+                                                </div> 
+                                            )}
+                                            
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    ) : (
+                        <div className="w-full flex items-center justify-center">
+                            <img src="/noOrder.png" alt="images" className="w-1/2"/>
+                        </div>
+                    )}
                 </div>
             )}
         </div>

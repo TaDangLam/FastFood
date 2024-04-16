@@ -53,8 +53,8 @@ const OrderDetail = () => {
             ) : (
                 <div className="flex flex-col gap-5 w-full h-full">
                     <div className="bg-slate-50 w-full flex justify-between rounded-md">
-                    <div className="p-2 flex gap-2"><span className="font-bold">Order Detail:</span> <span className="text-[#6da2f7] cursor-pointer ">#{orderDetail?._id}</span></div>
-                    <div className="p-2 flex gap-2"><span className="font-bold">Order At:</span> <span className="">{formatDateTime(orderDetail?.createdAt)}</span></div>
+                    <div className="p-2 flex gap-2"><span className="font-bold">Order Detail:</span> <span className="text-[#6da2f7] font-semibold cursor-pointer ">#{orderDetail?._id}</span></div>
+                    <div className="p-2 flex gap-2"><span className="font-bold">Order At:</span> <span className="text-[#6da2f7] font-semibold">{formatDateTime(orderDetail?.createdAt)}</span></div>
                 </div>
             <div className=" flex gap-4 w-full ">
                 <div className="flex flex-col gap-3 bg-slate-50 w-2/3 p-4 rounded-md">
