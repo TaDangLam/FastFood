@@ -20,16 +20,17 @@ const ProductDetail = () => {
     const dispatch = useDispatch();
     const [showReview, setShowReview] = useState(false);
     const [selectedTab, setSelectedTab] = useState("Description");
+    const [sortedReviews, setSortedReviews] = useState([]);
     const firstDesc = product.desc.split('.')[0];
     const [currentPage, setCurrentPage] = useState(1);
     const productsPerPage = 5;                                                      // Số sản phẩm trên mỗi trang
     const indexOfLastProduct = currentPage * productsPerPage;                       // chỉ mục cuối
     const indexOfFirstProduct = indexOfLastProduct - productsPerPage;               // chỉ mục đầu
-    const currentProducts = product.reviewId.slice(indexOfFirstProduct, indexOfLastProduct);
+    const currentProducts = sortedReviews.slice(indexOfFirstProduct, indexOfLastProduct);
     // --------------------Paginate Product Recommand--------------------------
     const [productRecommand, setProductRecommand] = useState([]);
     const [currentPage2, setCurrentPage2] = useState(1);
-    const productsPerPage2 = 4;                                                
+    const productsPerPage2 = 8;                                                
     const indexOfLastProduct2 = currentPage2 * productsPerPage2;                      
     const indexOfFirstProduct2 = indexOfLastProduct2 - productsPerPage2;             
     const currentProducts2 = productRecommand.slice(indexOfFirstProduct2, indexOfLastProduct2);
@@ -38,6 +39,17 @@ const ProductDetail = () => {
         getAllProductById(id, dispatch)
         fetchProductRecommand(accessToken);
     }, [id])
+
+    useEffect(() => {
+        renderSortReviews();
+    }, [product.reviewId])
+
+    const renderSortReviews = () => {
+        if(product.reviewId && product.reviewId.length > 0) {
+            const sortReviews = [...product.reviewId].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            setSortedReviews(sortReviews);
+        }
+    }
 
     const fetchProductRecommand = async(accessToken) => {
         try {
@@ -117,9 +129,9 @@ const ProductDetail = () => {
           showConfirmButton: false,
           timer: 1500
         });
-      }
+    }
 
-    console.log(accessToken);
+    // console.log(sortedReviews);
     return ( 
         <div className="margin-component mt-[31px] flex gap-5 relative">
             <div className="flex flex-col h-full w-9/12 border-r-2 pr-3 border-b-2 pb-3 gap-2">
@@ -234,7 +246,10 @@ const ProductDetail = () => {
                                             <div className='h-2/6 w-full text-lg font-semibold '>{product.product.name}</div>
                                             <div className=' h-1/6 w-full mb-0 flex items-center justify-between'>
                                                 <div className='flex font-semibold text-2xl text-[#ffa460] '>{product.product.price} <BsCurrencyDollar /></div>
-                                                <div className=''><span className="font-semibold">Sold</span> : {product.product.sold}</div>
+                                                <div className='flex flex-col'>
+                                                    <div className="h-1/2"><span className="font-semibold">Sold</span> : {product.product.sold}</div>
+                                                    <div className="h-1/2"><span className="font-semibold">Review</span> : {product.product.reviewId.length}</div>
+                                                </div>
                                             </div>
                                     </div>
                                     {product?.product.status === 'SoldOut' && (

@@ -71,11 +71,11 @@ export default function Home() {
   return (
     <div className="margin-component mt-[31px] h-full">
       <div className=" w-full h-1/4 relative">
-          <img src="/468702ee8eea3bb4d92aaa06d9b1e923.jpg" alt="Background images" className=" w-full object-cover rounded-xl"/>
+          <img src="/468702ee8eea3bb4d92aaa06d9b1e923.jpg" alt="Background images" className=" w-full object-cover rounded-xl "/>
           <div className="">
-            <div className="absolute top-1/4 left-40 text-9xl text-[#ffc139] font-semibold">Food</div>
-            <div className="absolute top-[350px] left-1/4 text-6xl text-white  font-medium">D E L I V E R Y</div>
-            <Link href={`/category/${idCategory}`} className="text-white hover:text-[#ffc139] font-medium duration-500"><div className="absolute top-2/4 left-1/4 bg-[#ffc139] hover:bg-white p-4 px-14 rounded-3xl">ORDER NOW</div></Link>
+            <div className="absolute top-1/4 left-40 text-9xl text-[#ffc139] font-bold">Food</div>
+            <div className="absolute top-[350px] left-1/4 text-6xl text-white font-semibold">D E L I V E R Y</div>
+            <Link href={`/category/${idCategory}`} className="text-white hover:text-[#ffc139] font-semibold duration-500"><div className="absolute top-2/4 left-1/4 bg-[#ffc139] hover:bg-white p-4 px-14 rounded-3xl">ORDER NOW</div></Link>
           </div>
       </div>
 
@@ -96,6 +96,9 @@ export default function Home() {
                 long time. Nowadays we can proudly boast our reputation for a
                 well known restaurant in our area. We are famous for the fabulous
                 authentic cuisine, professional chef and dedicated staff….
+          </div>
+          <div className="w-full">
+            <Link href={'/category/65f04dde81da17e4da64580f'} className="flex items-center justify-center bg-[#ffc139] p-5 w-16 text-white rounded-full hover:text-[#ffc139] hover:bg-white  hover:outline hover:outline-[#ffc139] duration-500"><FaPlus className="text-xl"/></Link>
           </div>
         </div>
       </div>

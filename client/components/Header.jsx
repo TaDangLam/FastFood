@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FaSearch, FaUserAlt, FaShoppingCart, FaFacebookSquare, FaTiktok, FaUser  } from "react-icons/fa";
 import { IoLogoInstagram } from "react-icons/io5";
 import { IoIosLogOut, IoIosNotifications } from "react-icons/io";
@@ -18,7 +18,7 @@ import { logout } from "@/app/api/route";
 import DropdownHome from "./DropdownHome";
 
 const Header = () => { 
-    // const user = useSelector(state => state.auth.user);
+    const cart = useSelector(state => state.cart.cart);
     const user = JSON.parse(sessionStorage.getItem('user'));
     const [isHovered, setIsHovered] = useState(false);
     const [searchText, setSearchText] = useState('');
@@ -53,7 +53,7 @@ const Header = () => {
     //         sessionStorage.setItem('user', JSON.stringify(updatedUser));
     //     }
     // }, [notification]);
-    
+
     useEffect(() => {
         const socket = io(`${process.env.NEXT_PUBLIC_BACKEND}`);
         if (user && user.role === 'staff') {
@@ -91,19 +91,19 @@ const Header = () => {
                     <div className="flex items-center w-full bg-white h-1/2">
                         <form 
                             onSubmit={handleSubmitSearch}
-                            className="flex items-center w-full h-full"
+                            className="flex items-center w-full h-full relative"
                         >
                             <input 
                                 type="text"
                                 value={searchText}
                                 onChange={e => setSearchText(e.target.value)}
                                 placeholder="Search for products (By ID, Name, Status)" 
-                                className="rounded-l-2xl p-5 h-1/2 w-11/12 bg-slate-100 focus:outline-none "
+                                className="rounded-l-2xl p-5 h-1/2 w-full bg-slate-100 rounded-r-2xl focus:outline-none focus:ring-1 focus:ring-slate-300"
                             />
                             
                             <button 
                                 type="submit"
-                                className="bg-slate-100 text-black p-5 rounded-r-2xl h-1/2 w-1/12 flex items-center justify-center">
+                                className="bg-slate-100 text-black p-5 rounded-r-2xl h-1/2 flex items-center justify-center border-l absolute right-0 ">
                                     <FaSearch />
                             </button>
                         </form>
@@ -130,7 +130,7 @@ const Header = () => {
                             )}
                         >
                             <Link href={'/information/staff/managerStatusProduct'} className="flex items-center gap-2 cursor-pointer text-[#ff9b49] duration-300 font-semibold justify-center w-1/2">
-                                    <FaUser />
+                                    <FaUser className="text-xl" />
                                     {user.name} (Staff)
                             </Link>
                         </Tippy> 
@@ -170,7 +170,7 @@ const Header = () => {
                             )}
                         >
                             <div  className="flex items-center gap-2 cursor-pointer duration-300 font-semibold w-1/2 justify-center text-xl">
-                                <IoIosNotifications  /> ({visibleNotifications?.length}) 
+                                <IoIosNotifications className="text-3xl" /> ({visibleNotifications?.length}) 
                             </div>
                         </Tippy>    
                     </div>
@@ -178,7 +178,9 @@ const Header = () => {
                     <div className='w-3/12 flex items-center gap-5 pl-10 '>
                         <div className="w-1/2 p-4 text-center">
                             <Link href={'/cart'} className="flex items-center justify-center gap-2 hover:text-[#ffc139] duration-300 font-semibold">
-                                <FaShoppingCart /> Cart
+                                <FaShoppingCart  className="text-xl"/> 
+                                <span>Cart </span> 
+                                <span className=" bg-[#ffae54] px-2 text-sm rounded-full text-white">{cart.length}</span>
                             </Link>
                         </div>
                         {user && Object.keys(user).length !== 0 ? (
@@ -202,14 +204,14 @@ const Header = () => {
                                 )}
                             >
                                 <Link href={'/information'} className="flex items-center gap-2 cursor-pointer text-[#ff9b49] duration-300 font-semibold">
-                                    <FaUser />
+                                    <FaUser  className="text-xl"/>
                                     {user.name}
                                 </Link>
                             </Tippy>  
                         ) : (
                             <div className="w-1/2 p-4">
                                 <Link href={'/auth'} className="flex items-center justify-center gap-2 hover:text-[#ffc139] duration-300 font-semibold">
-                                    <FaUserAlt />
+                                    <FaUserAlt className="text-xl" />
                                     Login
                                 </Link>
                             </div>
@@ -241,16 +243,16 @@ const Header = () => {
                                     <Link href={'/'} className={`flex items-center gap-2 duration-200 ${isHovered ? 'text-[#ffc139]' : 'hover:text-[#ffc139]'}`}>HOME <FaAngleDown/></Link>
                                 </Tippy>  
                             </li>
-                            <li className="p-2 hover:text-[#ffc139] font-semibold duration-200"><Link href={'/'}>ABOUT</Link></li>
-                            <li className="p-2 hover:text-[#ffc139] font-semibold duration-200"><Link href={'/'}>FOOD</Link></li>
-                            <li className="p-2 hover:text-[#ffc139] font-semibold duration-200"><Link href={'/'}>DELIVERY</Link></li>
-                            <li className="p-2 hover:text-[#ffc139] font-semibold duration-200"><Link href={'/'}>CONTACT</Link></li>
+                            <li className="p-2 hover:text-[#ffc139] font-semibold duration-300"><Link href={'/'}>ABOUT</Link></li>
+                            <li className="p-2 hover:text-[#ffc139] font-semibold duration-300"><Link href={'/'}>FOOD</Link></li>
+                            <li className="p-2 hover:text-[#ffc139] font-semibold duration-300"><Link href={'/'}>DELIVERY</Link></li>
+                            <li className="p-2 hover:text-[#ffc139] font-semibold duration-300"><Link href={'/'}>CONTACT</Link></li>
                         </ul>
                     </div>
                     <div className="flex gap-3 justify-center w-2/6">
-                        <a href="/" className="hover:text-[#ffc139]"><FaFacebookSquare className="h-15" /></a>
-                        <a href="/" className="hover:text-[#ffc139]"><IoLogoInstagram className="h-15" /></a>
-                        <a href="/" className="hover:text-[#ffc139]"><FaTiktok className="h-15" /></a>
+                        <a href="/" className="hover:text-[#ffc139] duration-300"><FaFacebookSquare className="h-15" /></a>
+                        <a href="/" className="hover:text-[#ffc139] duration-300"><IoLogoInstagram className="h-15" /></a>
+                        <a href="/" className="hover:text-[#ffc139] duration-300"><FaTiktok className="h-15" /></a>
                     </div>
                 </div>
             </div>

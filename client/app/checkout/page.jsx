@@ -250,7 +250,7 @@ const CheckoutPage = () => {
                         <button type="button" onClick={handleDirectPayment} className="w-full h-1/6 bg-rose-500 p-2 text-white rounded-lg hover:bg-rose-800">Order</button>
                     ) : (
                         <div className="w-full h-1/6">
-                           <Paypal 
+                            <Paypal 
                                 amount={total} 
                                 payload={{
                                     orderBy: user._id,
