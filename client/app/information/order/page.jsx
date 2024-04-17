@@ -227,7 +227,7 @@ const Order = () => {
                                 <div className="h-full"><span className="font-bold text-lg text-[#ff6a6d]">Status:</span> <span className="font-semibold">{order.status}</span></div>
                             </div>
                             {order.orderDetail.map(ord => (
-                                <Link href={`/information/order/orderdetail/${order._id}`} className="flex items-center w-full border-b-2">
+                                <Link href={`/information/order/orderdetail/${order._id}`} className="flex items-center w-full border-b-2 hover:opacity-65 duration-300">
                                     <div className="w-1/12"><img src={`${process.env.NEXT_PUBLIC_API_UPLOAD}/${ord.productId.name}/${ord.productId.images[0]}`} alt="product-images" className="object-cover w-full h-full"/></div>
                                     <div className="w-10/12 flex flex-col gap-2.5 px-5 py-2">
                                         <div className="w-full h-1/3 text-xl font-semibold">{ord.productId.name}</div>

@@ -268,6 +268,20 @@ export const getDetailUser = async(id, accessToken) => {
     }
 }
 
+export const searchUser = async(keyword, accessToken) => {
+    try {
+        const response = await axios.get(`${baseUrl}/user/search?keyword=${keyword}`, {
+            headers: {
+                'token': `Bearer ${accessToken}`
+            }
+        });
+        return response.data.data;
+    } catch (error) {
+        console.log('Get Search User error: ', error);
+        throw error;
+    }
+}
+
 export const login = async(username, password, dispatch) => {
     try {
         const response = await axios.post(`${baseUrl}/user/login`, {

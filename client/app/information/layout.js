@@ -24,15 +24,15 @@ const InformationLayout = ({ children }) => {
                 {user && user.role !== 'staff' && <HeaderInfo />}
             </div>
             <div className="flex w-full gap-5">
-                <div className="w-3/12">
+                <div className="w-3/12 relative">
                    {isStaffOnOrderDetailPage ? (
                         <NavbarOrderDetail />
                     ) : user && user.role === 'staff' ? (
-                        <NavbarStaff />
+                        <div className="sticky top-10 duration-200"><NavbarStaff /></div>
                     ) : showHeaderAndFooter ? (
                         <NavbarInfo />
                     ) : isOrderStatus ? (
-                        <NavbarOrder />
+                        <div className="sticky top-10 duration-200"><NavbarOrder /></div>
                     ) : (
                         <NavbarAddress />
                     )}

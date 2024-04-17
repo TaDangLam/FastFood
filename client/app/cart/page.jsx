@@ -111,8 +111,9 @@ const Cart = () => {
                     </div>
                 </div>
             ) : (
-                <div className="flex items-center justify-center">
+                <div className="flex flex-col items-center justify-center gap-5">
                     <img src="/empty-cart.png" alt="images-NoProduct" />
+                    <div  onClick={() => router.push('/')} className="p-3 bg-[#fdb825] text-white font-semibold text-lg rounded-full hover:opacity-70 cursor-pointer duration-300">Continue Shopping</div>
                 </div>
             )}
         </div>

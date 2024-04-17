@@ -21,6 +21,18 @@ const userController = {
             res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: error.message });
         }
     },
+    searchUser: async(req, res) => {
+        try {
+            const { keyword } = req.query;
+            if (!keyword) {
+                return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Keyword is required' });
+            }
+            const response = await userService.searchUser(keyword);
+            res.status(StatusCodes.OK).json(response);
+        } catch (error) {
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: error.message });
+        }
+    },
     getAllNotification: async(req, res) => {
         try {
             const userId = req.user.payload.id;

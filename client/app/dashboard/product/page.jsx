@@ -3,14 +3,16 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
+import { FaSearch } from "react-icons/fa";
 
-import { getAllProduct, removeProduct } from "@/app/api/route";
+import { getAllProduct, removeProduct, searchProduct } from "@/app/api/route";
 import Pagination from "@/components/Pagination";
 
 const Product = () => {
   const [dataProduct, setDataProduct] = useState([]);
   const accessToken = sessionStorage.getItem('accessToken');
   const [loading, setLoading] = useState(false);
+  const [searchText, setSearchText] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 15;
   const indexOfLastProduct = currentPage * productsPerPage;
@@ -62,23 +64,46 @@ const Product = () => {
             }
         }
     });
-}
+  }
 
+  const handleSubmitSearch = async(e) => {
+    e.preventDefault();
+    const newSearch = await searchProduct(searchText);
+    setDataProduct(newSearch);
+  }
 
   return (
     <div className="flex flex-col p-2 ">
-      {loading ? (
-        <div className="text-center py-40">
-          Loading......
-        </div>
-      ) : (
+      {dataProduct && dataProduct.length > 0 ? (
         <div className="flex flex-col gap-3 w-full h-full">
-          <Link
-            href={"/dashboard/product/new"}
-            className="bg-[#4b6cb7] text-white rounded-md py-1 px-2 w-2/12 h-1/6 text-center hover:opacity-85 duration-200"
-          >
-            Add New Product
-          </Link>
+          <div className="flex items-center justify-between w-full h-1/6 p-1">
+            <Link
+              href={"/dashboard/product/new"}
+              className="bg-[#4b6cb7] text-white rounded-md py-1 px-2 w-2/12 text-center hover:opacity-85 duration-200"
+            >
+              Add New Product
+            </Link>
+            <div className="flex items-center justify-end w-1/2">
+                <form
+                    onSubmit={handleSubmitSearch}
+                    className="flex w-5/6 h-full relative"
+                >
+                    <input
+                        type="text"
+                        value={searchText}
+                        onChange={e => setSearchText(e.target.value)}
+                        placeholder="Search for products (By ID, Name, Status)" 
+                        className="appearance-none block w-full h-full bg-slate-200 text-gray-700 border border-gray-100 rounded-l-xl rounded-r-xl p-4 focus:outline-none focus:ring-1 focus:ring-slate-400"
+                    />
+                    <button
+                        type="submit"
+                        className="bg-slate-200 text-black rounded-r-xl h-full p-4 flex items-center justify-center absolute right-0"
+                    >
+                        <FaSearch />
+                    </button>
+                </form>
+            </div>
+          </div>
           <table
             className={`table-auto border-collapse ${border1} w-full h-5/6 mt-5`}
           >
@@ -164,6 +189,10 @@ const Product = () => {
               currentPage={currentPage}
             />
           </div>
+        </div>
+      ) : (
+        <div className='flex items-center justify-center py-10'>
+          <img src="/no-product-found.jpg" alt="images" className='object-cover'/>
         </div>
       )}
     </div>

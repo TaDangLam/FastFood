@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 
 import { User } from "../model/userModel.js";
 import middlewareToken from "./jwtService.js";
+import mongoose from 'mongoose';
 
 
 const userService = {
@@ -26,6 +27,38 @@ const userService = {
                 message: 'Get all user is success',
                 data: allUser
             }
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    },
+    searchUser: async(keyword) => {
+        try {
+            let users;
+            // const roleToSearch = keyword.toLowerCase() === 'customer' ? 'customer' : 'staff';
+            const isValidObjectId = mongoose.Types.ObjectId.isValid(keyword);
+            
+            if (isValidObjectId) {
+                users = await User.find({ _id: keyword, role: { $ne: 'admin' } }).populate('address');
+            } else {
+                users = await User.find({
+                    $and: [
+                        {
+                            $or: [
+                                { name: { $regex: keyword, $options: 'i' } },
+                                { fullName: { $regex: keyword, $options: 'i' } },
+                                { phone: { $regex: keyword } }
+                            ]
+                        },
+                        // { role: roleToSearch },
+                        { role: { $ne: 'admin' } }
+                    ]
+                }).populate('address');
+            }
+            
+            return {
+                status: 'OK',
+                data: users
+            };
         } catch (error) {
             throw new Error(error.message);
         }
