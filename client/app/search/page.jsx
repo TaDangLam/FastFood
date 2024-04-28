@@ -51,7 +51,7 @@ const searchPage = () => {
     return (
         <div className='margin-component'>
             {data && data.length > 0 ? (
-                <div className='flex flex-col gap-5 p-3 bg-blue-200'>
+                <div className='flex flex-col gap-5 p-3'>
                     <div className='w-full p-1 flex justify-between'>
                         <div className='text-xl bg-slate-200 rounded-lg p-2 font-semibold'>Search Results: <span className='text-btn font-semibold'>{data.length}</span></div>
                         <div>

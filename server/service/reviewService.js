@@ -188,6 +188,8 @@ const reviewService = {
                     recommendations = reviewService.getRecommendations(reviewedProductIds, similarityMatrix);
                 }
             }
+            // Lọc các đề xuất chỉ bao gồm những đề xuất có điểm số tối thiểu là 1
+            recommendations = recommendations.filter(recommendation => recommendation.score >= 1);
     
             // Lấy các ObjectId của sản phẩm từ recommendations
             const productIds = recommendations.map(recommendation => recommendation.productId);
