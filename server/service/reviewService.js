@@ -189,7 +189,7 @@ const reviewService = {
                 }
             }
             // Lọc các đề xuất chỉ bao gồm những đề xuất có điểm số tối thiểu là 1
-            recommendations = recommendations.filter(recommendation => recommendation.score >= 1);
+            // recommendations = recommendations.filter(recommendation => recommendation.score >= 1);
     
             // Lấy các ObjectId của sản phẩm từ recommendations
             const productIds = recommendations.map(recommendation => recommendation.productId);
@@ -216,7 +216,7 @@ const reviewService = {
     getPopularProducts: async () => {
         try {
             // Lấy danh sách các sản phẩm phổ biến hoặc ngẫu nhiên
-            const popularProducts = await Product.find().limit(15).sort({ sold: -1 }); // Sắp xếp theo số lượng bán được giảm dần
+            const popularProducts = await Product.find().limit(20).sort({ sold: -1 }); // Sắp xếp theo số lượng bán được giảm dần
             return popularProducts.map(product => ({ productId: product._id, score: product.popularityScore }));
         } catch (error) {
             throw new Error('Error getting popular products: ' + error.message);
