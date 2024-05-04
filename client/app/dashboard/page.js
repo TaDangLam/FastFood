@@ -20,6 +20,13 @@ const Dashboard = () => {
     const [customer, setCustomer] = useState([]);
     const [staff, setStaff] = useState([]);
     const [order, setOrder] = useState([]);
+    const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+    const [totalRevenueOfYear, setTotalRevenueOfYear] = useState(0);
+    const [totalOrderOfYear, setTotalOrderOfYear] = useState(0);
+
+    const handleYearChange = (event) => {
+        setSelectedYear(parseInt(event.target.value)); // Convert selected value to integer (year)
+    };
 
     const fetchCustomer = async() => {
         try {
@@ -65,22 +72,51 @@ const Dashboard = () => {
         fetchOrder();
     }, [])
 
+    useEffect(() => {
+        // Tính tổng doanh thu và số đơn hàng của năm đã chọn
+        const calculateDataForSelectedYear = () => {
+            let revenue = 0;
+            let orderCount = 0;
+
+            order.forEach((ord) => {
+                const orderYear = new Date(ord.createdAt).getFullYear();
+                if (orderYear === selectedYear) {
+                    if (ord.status === 'Delivered') {
+                        revenue += parseFloat(ord.totalPrice);
+                    }
+                    orderCount++;
+                }
+            });
+
+            setTotalRevenueOfYear(revenue);
+            setTotalOrderOfYear(orderCount);
+        };
+
+        calculateDataForSelectedYear();
+    }, [selectedYear, order]);
+
     const calculateOrdersByMonth = () => {
-        const ordersByMonth = Array(12).fill(0); // Tạo mảng 12 phần tử ban đầu có giá trị 0
+        const ordersByMonth = Array(12).fill(0);
         order.forEach(orderItem => {
-            const month = new Date(orderItem.createdAt).getMonth(); // Lấy tháng từ ngày tạo đơn hàng
-            ordersByMonth[month]++; // Tăng số đơn hàng của tháng tương ứng
+            const orderYear = new Date(orderItem.createdAt).getFullYear();
+            if (orderYear === selectedYear) {
+                const month = new Date(orderItem.createdAt).getMonth();
+                ordersByMonth[month]++;
+            }
         });
         return ordersByMonth;
     };
-
+    
     const calculateProductsBoughtByMonth = () => {
-        const productsBoughtByMonth = Array(12).fill(0); // Tạo mảng 12 phần tử ban đầu có giá trị 0
+        const productsBoughtByMonth = Array(12).fill(0);
         order.forEach(orderItem => {
-            const month = new Date(orderItem.createdAt).getMonth(); // Lấy tháng từ ngày tạo đơn hàng
-            orderItem.orderDetail.forEach(item => {
-                productsBoughtByMonth[month] += item.quantity; // Cộng số lượng sản phẩm trong đơn hàng vào tháng tương ứng
-            });
+            const orderYear = new Date(orderItem.createdAt).getFullYear();
+            if (orderYear === selectedYear) {
+                const month = new Date(orderItem.createdAt).getMonth();
+                orderItem.orderDetail.forEach(item => {
+                    productsBoughtByMonth[month] += item.quantity;
+                });
+            }
         });
         return productsBoughtByMonth;
     };
@@ -111,21 +147,22 @@ const Dashboard = () => {
     ];
 
 
-    const totalRevenue = () => {
-        const revenue = order.reduce((total, ord) => {
-            const orderPrice = parseFloat(ord.totalPrice);
-            return total + orderPrice;
-        }, 0);
-        return revenue;
-    }
+    // const totalRevenue = () => {
+    //     const revenue = order.reduce((total, ord) => {
+    //         const orderPrice = parseFloat(ord.totalPrice);
+    //         return total + orderPrice;
+    //     }, 0);
+    //     return revenue;
+    // }
 
     const calculateMonthlyRevenue = () => {
-        const monthlyRevenue = Array(12).fill(0); // Tạo mảng 12 phần tử ban đầu có giá trị 0 cho 12 tháng trong năm
+        const monthlyRevenue = Array(12).fill(0);
         order.forEach(orderItem => {
-            const month = new Date(orderItem.createdAt).getMonth(); // Lấy tháng từ ngày tạo đơn hàng
-            const orderPrice = parseFloat(orderItem.totalPrice);
-            if (orderItem.status === 'Delivered') { // Chỉ tính các đơn hàng đã được giao (delivered)
-                monthlyRevenue[month] += orderPrice; // Cộng tổng doanh thu của đơn hàng vào tháng tương ứng
+            const orderYear = new Date(orderItem.createdAt).getFullYear();
+            if (orderYear === selectedYear && orderItem.status === 'Delivered') {
+                const month = new Date(orderItem.createdAt).getMonth();
+                const orderPrice = parseFloat(orderItem.totalPrice);
+                monthlyRevenue[month] += orderPrice;
             }
         });
         return monthlyRevenue;
@@ -134,17 +171,17 @@ const Dashboard = () => {
     // console.log(customer)
     // console.log(category);
     // console.log(staff)
-    console.log(order)
+    // console.log(order)
     // console.log(totalRevenue()) ;
     
     return ( 
         <div className="flex flex-col gap-6 h-full w-full p-2">
-            <div className="flex gap-5 items-center justify-between w-full h-1/6">
+            <div className="flex gap-5 items-center justify-between w-full ">
                 <Link href={'/dashboard'} className="flex items-center p-2  gap-2 bg-gradient-to-r from-[#005AA7] to-[#36D1DC] text-white  border h-full w-1/4 rounded-xl hover:bg-[#4b6cb7] hover:shadow-xl hover:opacity-70 duration-500">
                     <div className="flex items-center justify-center w-1/3 h-full font-semibold text-5xl"><FaHandHoldingDollar /></div>
                     <div className="flex flex-col w-2/3 py-2 h-full ">
-                        <div className="w-full h-2/4 flex items-center justify-center text-4xl font-semibold">{totalRevenue().toFixed(2)}</div>
-                        <div className="w-full h-2/4 flex items-center justify-center text-sm">Total Revenue</div>
+                        <div className="w-full h-2/4 flex items-center justify-center text-4xl font-semibold">{totalRevenueOfYear.toFixed(2)}</div>
+                        <div className="w-full h-2/4 flex items-center justify-center text-sm">Total Revenue Of Year</div>
                     </div>
                 </Link>
                 <Link href={`/dashboard/user?user=Customer`} className="flex items-center p-2  gap-2 bg-gradient-to-r from-[#005AA7] to-[#36D1DC] text-white border h-full w-1/4 rounded-xl hover:bg-[#4b6cb7] hover:shadow-xl hover:opacity-70 duration-500">
@@ -164,13 +201,26 @@ const Dashboard = () => {
                 <Link href={'/dashboard/order?status=Delivered'} className="flex items-center p-2  gap-2 bg-gradient-to-r from-[#005AA7] to-[#36D1DC] text-white border h-full w-1/4 rounded-xl hover:bg-[#4b6cb7] hover:shadow-xl hover:opacity-70 duration-500">
                     <div className="flex items-center justify-center w-1/3 h-full font-semibold text-5xl"><MdPayments/></div>
                     <div className="flex flex-col w-2/3 py-2 h-full">
-                        <div className="w-full h-2/4 flex items-center justify-center text-4xl font-semibold">{order.length}</div>
-                        <div className="w-full h-2/4 flex items-center justify-center text-sm">Total Order</div>
+                        <div className="w-full h-2/4 flex items-center justify-center text-4xl font-semibold">{totalOrderOfYear}</div>
+                        <div className="w-full h-2/4 flex items-center justify-center text-sm">Total Order Of Year</div>
                     </div>
                 </Link>
             </div>
-            <div className="flex flex-col gap-5 w-full h-5/6">
+            <div className="flex flex-col gap-10 w-full h-5/6">
                 <div className=" w-full h-1/2 rounded-xl">
+                    <div className="flex items-center gap-2">
+                        <label htmlFor="yearSelect" className="text-xl font-semibold">Select Year:</label>
+                        <select
+                            id="yearSelect"
+                            value={selectedYear}
+                            onChange={handleYearChange}
+                            className="p-2 border rounded-md"
+                        >
+                            {[...Array(new Date().getFullYear() - 2021).keys()].map((year) => (
+                                <option key={2022 + year} value={2022 + year}>{2022 + year}</option>
+                            ))}
+                        </select>
+                    </div>
                     <Line  
                         data={{
                             labels: months,
@@ -191,20 +241,19 @@ const Dashboard = () => {
                                 },
                                 {
                                     label: "Monthly Revenue",
-                                    data: calculateMonthlyRevenue(), // Lấy dữ liệu tổng doanh thu từ mỗi đơn hàng
+                                    data: calculateMonthlyRevenue(),
                                     backgroundColor: '#36D1DC',
                                     borderColor: '#36D1DC',
                                     borderWidth: 3
                                 }
-    
                             ]
                         }}
                         options={{
-                            maintainAspectRatio: false, // Loại bỏ tỷ lệ khung hình
+                            maintainAspectRatio: false,
                             plugins: {
                                 title: {
                                     display: true,
-                                    text: 'Number of orders, products bought, and total revenue by month',
+                                    text: `Number of orders, products bought, and total revenue by month (${selectedYear})`,
                                     font: {
                                         size: 16,
                                         weight: 'bold'
@@ -214,7 +263,7 @@ const Dashboard = () => {
                         }}
                     />
                 </div>
-                <div className="flex gap-4 w-full h-1/2 rounded-xl">
+                <div className="flex gap-4 w-full h-1/2 rounded-xl pt-5">
                     <div className="flex items-center justify-center  h-full w-1/2 text-center">
                         <Pie
                             data={{
