@@ -54,7 +54,8 @@ const ProductDetail = () => {
     const fetchProductRecommand = async(accessToken) => {
         try {
             const data = await getRecommandProduct(accessToken);
-            setProductRecommand(data);
+            const filteredProducts = data.filter(prod => prod.product._id !== id);
+            setProductRecommand(filteredProducts);
         } catch (error) {
             console.log(error)
         }
