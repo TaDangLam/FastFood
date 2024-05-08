@@ -58,11 +58,11 @@ const OrderDetail = () => {
                         </svg>
                         <span className="font-bold">Information User</span>
                     </div>
-                    <div className="flex gap-2"><span className="font-semibold">Name:</span> <span>{orderDetail?.orderBy?.fullName}</span></div>
-                    <div className="flex gap-2"><span className="font-semibold">Phone:</span> <span>{orderDetail?.orderBy?.phone}</span></div>
-                    <div className="flex gap-2"><span className="font-semibold">Street:</span> <span>{orderDetail?.address?.street}</span></div>
-                    <div className="flex gap-2"><span className="font-semibold">City:</span> <span>{orderDetail?.address?.city}</span></div>
-                    <div className="flex gap-2"><span className="font-semibold">Province:</span> <span>{orderDetail?.address?.province}</span></div>
+                    <div className="flex gap-2"><span className="font-bold">Name:</span> <span>{orderDetail?.orderBy?.fullName}</span></div>
+                    <div className="flex gap-2"><span className="font-bold">Phone:</span> <span>{orderDetail?.orderBy?.phone}</span></div>
+                    <div className="flex gap-2"><span className="font-bold">Street:</span> <span>{orderDetail?.address?.street}</span></div>
+                    <div className="flex gap-2"><span className="font-bold">City:</span> <span>{orderDetail?.address?.city}</span></div>
+                    <div className="flex gap-2"><span className="font-bold">Province:</span> <span>{orderDetail?.address?.province}</span></div>
                 </div>
                 <div className="flex flex-col gap-3 bg-slate-50 w-1/3 p-4 rounded-md ">
                     <div className="flex items-center gap-1">
@@ -75,7 +75,7 @@ const OrderDetail = () => {
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M14.121 7.629A3 3 0 009.017 9.43c-.023.212-.002.425.028.636l.506 3.541a4.5 4.5 0 01-.43 2.65L9 16.5l1.539-.513a2.25 2.25 0 011.422 0l.655.218a2.25 2.25 0 001.718-.122L15 15.75M8.25 12H12m9 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
-                        <span className="flex gap-2"><span className="font-semibold">Method:</span> {orderDetail?.paymentType}</span>
+                        <span className="flex gap-2"><span className="font-bold">Method:</span> {orderDetail?.paymentType}</span>
                     </div>
                     <div className="flex gap-1 ml-1">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">

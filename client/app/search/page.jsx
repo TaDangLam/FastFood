@@ -73,7 +73,10 @@ const searchPage = () => {
                                         <div className='h-1/6 w-full text-lg font-semibold '>{product.name}</div>
                                         <div className=' h-1/6 w-full mb-0 flex items-center justify-between'>
                                             <div className='flex font-semibold text-2xl text-[#ffa460] '>{product.price} <BsCurrencyDollar /></div>
-                                            <div className=''><span className="font-semibold">Sold</span> : {product.sold}</div>
+                                            <div>
+                                                <div className=''><span className="font-semibold">Sold</span> : {product.sold}</div>
+                                                <div className=''><span className="font-semibold">Review</span> : {product.reviewId.length}</div>
+                                            </div>
                                         </div>
                                 </div>
                                 {product?.status === 'SoldOut' && (

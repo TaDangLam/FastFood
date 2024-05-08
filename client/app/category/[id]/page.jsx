@@ -87,7 +87,10 @@ const Category = () => {
                                     <div className='w-full h-2/3 text-lg font-medium'>{product.name}</div>
                                     <div className='flex items-center justify-between w-full h-1/3'>
                                         <div className='text-[#ffc139] text-2xl font-semibold '><span className=''>$ {product.price}</span></div>
-                                        <div className='text'><span className="font-semibold">Sold</span> : {product.sold}</div>
+                                        <div>
+                                            <div className='text'><span className="font-semibold">Sold</span> : {product.sold}</div>
+                                            <div className='text'><span className="font-semibold">Review</span> : {product.reviewId.length}</div>
+                                        </div>
                                     </div>
 
                                 </div>
