@@ -237,7 +237,7 @@ const ProductDetail = () => {
                     </div>
                 </div>
                 <div className="flex flex-col w-full gap-2 h-1/6 pt-10">
-                    <div className="w-full h-1/2 font-semibold text-xl">Outstanding Products</div>
+                    <div className="w-full h-1/2 font-semibold text-xl">Other products</div>
                     <div className="flex flex-col gap-5 w-full h-1/2">
                         <div className="grid grid-cols-4 w-full gap-3">
                             {currentProducts2?.map(product => (
